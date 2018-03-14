@@ -152,15 +152,15 @@ Reponse:
   "depth": {
     "pairId": "ETH_ADX",
     "timeMs": "1513244690782",
-    "asks": [
+    "asks": [ // In ascending order of price
       {
-        price: 1000.00 // price升序
+        price: 1000.00 
         amount: 100
       }
     ],
-    "bids": [
+    "bids": [// In descending order of price
       {
-        price: 1000.00// 按price降序
+        price: 1000.00
         amount: 100 
       }
     ]
@@ -201,16 +201,16 @@ response:
 ```javascript
 {
   orders: [{
-    order_id: '334213',
-    pair_id: 'ETH_ADX',
+    order_id: '334213', //Unique Order Id
+    pair_id: 'ETH_ADX', 
     action: 1,
-    type: 'limit',
+    type: 'limit', // Order Type:
     price: 1000,
-    amount_total: 6, //总数量（包括成交、未成交）
-    amount_filled: 3, // 已成交数量
-    filled_total_price: 3000, // 已成交总金额
-    create_time_ms: 12317, // 创建时间
-    update_time_ms: 12317, // 结束时间
+    amount_total: 6, //Total Amount（include filled and unfilled）
+    amount_filled: 3, // Filled amount
+    filled_total_price: 3000, // Filled price
+    create_time_ms: 12317, // Order create time
+    update_time_ms: 12317, // Last updated time
     status: 1,
     nonce: 12,
   }],
@@ -231,7 +231,7 @@ Request:  **sign needed**
 
 ```javascript
 {
-  filter: { // optional，不加filter查询所有
+  filter: { 
     action: '1', // all for all action
     type: 'limit', // limit, market, and all for all type
   },
@@ -246,13 +246,13 @@ response:
     order_id: '334213',
     pair_id: 'ETH_ADX',
     action: 1,
-    type: 'limit',
+    type: 'limit', // Order type
     price: 1000,
-    amount_total: 6, //总数量（包括成交、未成交）
-    amount_filled: 3, // 已成交数量
-    filled_total_price: 3000, // 已成交总金额
-    create_time_ms: 12317, // 创建时间
-    update_time_ms: 12317, // 结束时间
+    amount_total: 6, //Total Amount（include filled and unfilled）
+    amount_filled: 3, // Filled amount
+    filled_total_price: 3000, // Filled price
+    create_time_ms: 12317, // Order create time
+    update_time_ms: 12317, // Last updated time
     status: 1,
     nonce: 12,
   }],
@@ -451,7 +451,7 @@ Request:  **sign needed**
 ```javascript
 {
   trans_type: 'all', // Trans_enum: 1
-  token: 'all', // 币种类型
+  token: 'all', // Token type
   page: 1,
   count: 20,
 }
@@ -462,26 +462,26 @@ response:
 ```javascript
 {
   data: [{
-    trans_id: 1, // 转账id
+    trans_id: 1, // Unique trans id
     token_id: 'ETH',
-    active: 1,//充值、提现
+    active: 1,// Trans type: 1, deposit 2,withdraw
     amount: 6,
-    addr: 'xxx', //充值提现地址
+    addr: 'xxx', //User address of trans
     txid: 'xxx', //Transaction ID
-    fee: 11,
-    status: 1, //充值提现对应状态
+    fee: 11, // Transaction fee
+    status: 1, //Transaction status 
     create_time_ms: 111,
     update_time_ms: 111,
   },{
-    trans_id: 2, // 转账id
+    trans_id: 2, 
     token_id: 'ADX',
-    active: 2,//充值、提现
+    active: 2,
     amount: 6,
-    addr: 'xxx', //充值提现地址
-    txid: 'xxx', //Transaction ID
+    addr: 'xxx', 
+    txid: 'xxx', 
     fee: 11,
-    status: 1, //充值提现对应状态
-    contract_id: 12, // TODO
+    status: 1, 
+    contract_id: 12, 
     create_time_ms: 111,
     update_time_ms: 111,
   }],
@@ -588,8 +588,8 @@ Request:  **sign needed**
 
 ```javascript
 {
-  tokenId: 'ETH',
-  amount: '11.11', //提现数量
+  tokenId: 'ETH', // Withdraw token id
+  amount: '11.11', //Withdraw Amount
 }
 ```
 
