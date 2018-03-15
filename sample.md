@@ -4,7 +4,7 @@
 
 #### Method `GetPairDepth`
 
-**Description**: Get the depth data of a trading token pair.
+Get the depth data of a trading token pair.
 
 **Request**: `GET /api/v1/depth/{pairId}/{size}`
 
