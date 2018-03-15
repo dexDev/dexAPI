@@ -22,6 +22,7 @@ http://alpha.dex.top/api/v1/depth/ETH_ADX/3
 {
   "depth": {
     "pairId": "ETH_ADX",
+    # The timestamp in millisecond of this depth data.
     "timeMs": "1513244690782",
     # `asks` are ascending by price.
     "asks": [
@@ -29,7 +30,7 @@ http://alpha.dex.top/api/v1/depth/ETH_ADX/3
       { price: 1100.00, amount: 10.70 },
       { price: 1200.37, amount: 80.25 },
     ],
-    # `bids` are descending by price
+    # `bids` are descending by price.
     "bids": [
       { price: 1000.00, amount: 10.00 },
       { price: 999.99, amount: 95.50 },
