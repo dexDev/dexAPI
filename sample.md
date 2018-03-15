@@ -6,7 +6,7 @@
 
 Get the depth data of a trading token pair.
 
-**Request**: `GET /api/v1/depth/{pairId}/{size}`
+**Request** `GET /api/v1/depth/{pairId}/{size}`
 
 - `pairId`: The id of the trading token pair.
 - `size`: The number of levels of depth to get.
