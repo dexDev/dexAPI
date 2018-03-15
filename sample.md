@@ -26,9 +26,9 @@ http://alpha.dex.top/api/v1/depth/ETH_ADX/3
     "timeMs": "1513244690782",
     # `asks` are ascending by price.
     "asks": [
-      { price: 1050.98, amount: 50.50 }
-      { price: 1100.00, amount: 10.70 },
-      { price: 1200.37, amount: 80.25 },
+      { price: 1050.98, amount: 50.50 }，
+      { price: 1100.00, amount: 10.70 },
+      { price: 1200.37, amount: 80.25 }
     ],
     # `bids` are descending by price.
     "bids": [
