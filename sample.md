@@ -2,7 +2,7 @@
 
 ### Getting Public Trading Data
 
-#### GetPairDepth
+#### Method `GetPairDepth`
 
 **Description**: Get the depth data of a trading token pair.
 
