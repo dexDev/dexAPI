@@ -6,7 +6,7 @@
 
 Get the depth data of a trading token pair.
 
-**Request** `GET /api/v1/depth/{pairId}/{size}`
+**Request** `GET /v1/depth/{pairId}/{size}`
 
 - `pairId` The id of the trading token pair.
 - `size` The number of levels of depth to get.
@@ -14,7 +14,7 @@ Get the depth data of a trading token pair.
 **Sample Request**
 
 ```http
-http://alpha.dex.top/api/v1/depth/ETH_ADX/3
+http://alpha.dex.top/v1/depth/ETH_ADX/3
 ```
 
 **Sample Response**
