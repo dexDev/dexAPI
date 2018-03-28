@@ -1,26 +1,25 @@
 # DEx Open API
-
 ------
 
 ### TradeInfo APIs
 
-#### GetPairsByCash 货币对列表
+#### GetPairsByCash
 
-URL: `/api/v1/pairlist/:cashTokenId` 
+This API for getting realtime  trade infomation of  all pair of specific cashtoken such as ETH.
 
-Method: `GET` 
+**Request** `GET /v1/pairlist/:cashTokenId` 
 
-Request: 
+- `cashTokenId` The basic cash token like ETH
+
+**Simple Request**
 
 ```http
-http://alpha.dex.top/api/v1/pairlist/ETH
+http://alpha.dex.top/v1/pairlist/ETH
 ```
 
-Response:
+**simple Response**
 
-​	status code: 200
-
-```javascript
+```yaml
 {
   "pairs":[
     {
@@ -37,29 +36,22 @@ Response:
 }
 ```
 
-Note: 
 
-This API for getting realtime  trade infomation of  all pair of specific cashtoken such as ETH.
+#### GetPairInfo
 
+**Request** `GET /v1/pairinfo/:pairId`
 
+- `pairId` Order trade pair
 
-#### GetPairInfo 货币对详情
-
-URL: `/api/v1/pairinfo/:pairId`
-
-Method: `GET` 
-
-Request: 
+**Simple Request**
 
 ```http
-http://alpha.dex.top/api/v1/pairlist/ETH_ADX
+http://alpha.dex.top/v1/pairlist/ETH_ADX
 ```
 
-Response:
-
-​	status code: 200
-
-```javascript
+**Simple Response**
+​
+```yaml
 {
   "pairId": "ETH_ADX",
   "timeMs": "1517974573647",
@@ -72,25 +64,19 @@ Response:
 }
 ```
 
-Note:
+#### GetTokens
 
+**Request** `GET /v1/tokens`
 
-
-#### GetTokens 查询系统支持的所有币种
-
-URL: `/api/v1/tokens` 
-
-Method: `GET`
-
-Request: 
+**Simple Request**
 
 ```http
-http://alpha.dex.top/api/v1/tokens
+http://alpha.dex.top/v1/tokens
 ```
 
-Response:
+**Simple Response**
 
-```javascript
+```yaml
 {
   "data": [
     "ETH",
@@ -101,67 +87,120 @@ Response:
 }
 ```
 
-Note:
 
+#### GetTradeHistory
 
+Get recent trades by PairId
 
-#### GetTradeHistory 货币对最近交易
+**Request** `GET /v1/tradehistory/:pairId/:size`
 
-Method:  `GET` 
+- `pairId` The id of the trading token pair.
+- `size` The number of levels of history to get.
 
-URL: `/api/v1/tradehistory/:pairId/:size`
-
-Request: 
+**Simple Request**
 
 ```http
-http://alpha.dex.top/api/v1/tradehistory/ETH_ADX/5
+http://alpha.dex.top/v1/tradehistory/ETH_ADX/3
 ```
 
-Response:
+**Simple Response**
 
-```javascript
+```yaml
 {
-  "records": [{
-     "pairId": "ETH_ADX",
-     "timeMs": "1513244690782",
-     "action": "Sell", // Buy, Sell
-     "price": "0.11",
-     "amount": "253"
-  }]
+  "records": [
+    {
+      "pairId": "ETH_ADX",
+      "timeMs": "1522208665707",
+      "action": "Buy",
+      "price": "0.00010000",
+      "amount": "934.00000000"
+    },
+    {
+      "pairId": "ETH_ADX",
+      "timeMs": "1522208545271",
+      "action": "Buy",
+      "price": "0.00010000",
+      "amount": "66.00000000"
+    },
+    {
+      "pairId": "ETH_ADX",
+      "timeMs": "1522208486796",
+      "action": "Buy",
+      "price": "0.00010000",
+      "amount": "1000.00000000"
+    }
+  ]
 }
 ```
 
 
 
-#### GetPairDepth 货币对深度
+#### GetPairDepth
 
-Method:  `GET` 
 
-URL: `/api/v1/depth/:pairId/:size` 
+**Request** `GET /v1/depth/:pairId/:size` 
 
-Request: 
+- `pairId` The id of the trading token pair.
+- `size` The number of levels of depth to get.
+
+**Simple Request**
 
 ```http
-http://alpha.dex.top/api/v1/depth/ETH_ADX/5
+http://alpha.dex.top/v1/depth/ETH_ADX/5
 ```
 
 Reponse:
 
-```javascript
+```yaml
 {
   "depth": {
     "pairId": "ETH_ADX",
+    # The timestamp in millisecond of this depth data.
     "timeMs": "1513244690782",
-    "asks": [ // In ascending order of price
+    # `asks` are ascending by price.
+    "asks": [
       {
-        price: 1000.00 
-        amount: 100
+        "price": "0.00157384",
+        "amount": "66.00000000"
+      },
+      {
+        "price": "0.00159438",
+        "amount": "80.00000000"
+      },
+      {
+        "price": "0.00163499",
+        "amount": "100.00000000"
+      },
+      {
+        "price": "0.00168030",
+        "amount": "666.00000000"
+      },
+      {
+        "price": "0.00175212",
+        "amount": "800.00000000"
       }
     ],
-    "bids": [// In descending order of price
+    # `bids` are descending by price.
+    "bids": [
       {
-        price: 1000.00
-        amount: 100 
+        "price": "0.00155000",
+        "amount": "665.00000000"
+      },
+      {
+        "price": "0.00151903",
+        "amount": "66.00000000"
+      },
+      {
+        "price": "0.00150021",
+        "amount": "1000.00000000"
+      },
+      {
+        "price": "0.00144436",
+        "amount": "78.00000000"
+      },
+      {
+        "price": "0.00140912",
+        "amount": "753.35833123"
       }
     ]
   }
@@ -169,36 +208,38 @@ Reponse:
 ```
 
 
+#### GetActiveOrders
 
-#### GetKlineByPairId 货币对图表数据
+Get user's unfilled orders on current wallet address
 
-Method: `GET` 
+**Request** `GET /v1/activeorders/:pairId/:size/:page` 
 
-URL: `/api/v1/kline/history`
 
-Response: 
+- cookie
+  - `dex-user-jwt-token` User token get after login
+  - `dex-trader-addr` User's current legal trading address 
 
-```javascript
-{
-    
-}
+- params
+  - `pairId` The id of the trading token pair.
+  - `size` The number of each page of user active orders to get.
+  - `page` The pages number to get
+
+**Sample Cookie**
+```
+dex-user-jwt-token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdGRDbGFpbXMiOnsiYXVkIjoiREV4IFNlcnZlcnMiLCJleHAiOjE1MjEyNjU3MTcsImp0aSI6ImEwY2VmNGQ0LTBmNWQtNDVmMS05MzYwLTkwOGQ0MmY1ZWMzYiIsImlhdCI6MTUyMTAwNjUxNywiaXNzIjoiREV4Iiwic3ViIjoiMiJ9fQ.r0kwUhMh8pZCGazZt0Lp4gPl1JEOdQIGyXlNpi5zHQ90NloUXNuEhlSRvSrTu5rug6nhkO_cbvIGc2okeC9zLQ; 
+
+dex-trader-addr=0x6a83D834951F29924559B8146D11a70EaB8E328b
 ```
 
-#### GetActiveOrders 查询当前订单
+**Simple Request**
 
-Methed: `GET`
-
-URL:  `/api/v1/activeorders/:traderAddr/:pairId/:size/:page` 
-
-Request: 
-
-```javascript
-http://alpha.dex.top/api/v1/activeorders/ETH_ADX/100/1
+```yaml
+http://alpha.dex.top/v1/activeorders/ETH_ADX/100/1
 ```
 
-response:
+**Simple response**
 
-```javascript
+```yaml
 {
   orders: [{
     order_id: '334213', //Unique Order Id
@@ -221,26 +262,38 @@ response:
 
 
 
-#### GetPastOrders 查询历史订单
+#### GetPastOrders
 
-Method:  `POST` 
+Get user's filled orders on current wallet address
 
-URL: `/api/v1/pastorders/:pairId/:size/:page`
+**Request**`POST /v1/pastorders/:pairId/:size/:page`
 
-Request:  **sign needed**
+- cookie
+  - `dex-user-jwt-token` User token get after login API
+  - `dex-trader-addr` User's current legal trading address 
 
-```javascript
-{
-  filter: { 
-    action: '1', // all for all action
-    type: 'limit', // limit, market, and all for all type
-  },
-}
+- params
+  - `pairId` The id of the trading token pair.
+  - `size` The number of each page of user past orders to get.
+  - `page` The pages number to get
+
+
+**Sample Cookie**
+```
+dex-user-jwt-token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdGRDbGFpbXMiOnsiYXVkIjoiREV4IFNlcnZlcnMiLCJleHAiOjE1MjEyNjU3MTcsImp0aSI6ImEwY2VmNGQ0LTBmNWQtNDVmMS05MzYwLTkwOGQ0MmY1ZWMzYiIsImlhdCI6MTUyMTAwNjUxNywiaXNzIjoiREV4Iiwic3ViIjoiMiJ9fQ.r0kwUhMh8pZCGazZt0Lp4gPl1JEOdQIGyXlNpi5zHQ90NloUXNuEhlSRvSrTu5rug6nhkO_cbvIGc2okeC9zLQ; 
+
+dex-trader-addr=0x6a83D834951F29924559B8146D11a70EaB8E328b
 ```
 
-response:
+**Simple Request**
 
-```javascript
+```yaml
+http://alpha.dex.top/v1/activeorders/ETH_ADX/100/1
+```
+
+**Simple response**
+
+```yaml
 {
   orders: [{
     order_id: '334213',
@@ -268,30 +321,38 @@ response:
 
 ### Trade APIs
 
-#### PlaceOrder 下单
+#### PlaceOrder
 
-Method: `POST`
+Place a trade order on current market using current trading address
 
-URL:  `/api/v1/placeorder` 
+**Request** `POST /v1/placeorder` 
 
-Cookie: 
+- cookie
+  - `dex-user-jwt-token` User token get after login API
+  - `dex-trader-addr` User's current legal trading address 
+
+- params
+  - `amount` The id of the trading token pair.
+  - `price` The number of each page of user past orders to get.
+  - `action` The pages number to get
+  - `nonce`
+  - `sig` 
+  - `pairId` The pairid 
+
+
+**Simple Cookie**
 
 ```
 dex-user-jwt-token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdGRDbGFpbXMiOnsiYXVkIjoiREV4IFNlcnZlcnMiLCJleHAiOjE1MjEyNjU3MTcsImp0aSI6ImEwY2VmNGQ0LTBmNWQtNDVmMS05MzYwLTkwOGQ0MmY1ZWMzYiIsImlhdCI6MTUyMTAwNjUxNywiaXNzIjoiREV4Iiwic3ViIjoiMiJ9fQ.r0kwUhMh8pZCGazZt0Lp4gPl1JEOdQIGyXlNpi5zHQ90NloUXNuEhlSRvSrTu5rug6nhkO_cbvIGc2okeC9zLQ; 
-// User token
-dex-user_id=2; 
-
-dex-user_email=flynn%40dex.top; 
 
 dex-trader-addr=0x6a83D834951F29924559B8146D11a70EaB8E328b
 // trader address of this operation
 ```
 
-
-
-Request:  **sign needed**
+**Simple Request**
 
 ```js
+http://alpha.dex.top/v1/placeorder
 {
   "amount": "1",  // Order amount
   "price": "0.0001", // Order price
@@ -304,9 +365,9 @@ Request:  **sign needed**
 
 ```
 
-Response:
+**Simple Response**
 
-```javascript
+```yaml
 {
   "order": {
     "orderId": "10000001", // 
@@ -324,15 +385,22 @@ Response:
 }
 ```
 
-#### CancelOrder 撤单
+#### CancelOrder
 
-Method: `POST` 
+**Request**`POST /v1/cancelorder`
 
-URL: `/api/v1/cancelorder `
+- cookie
+  - `dex-user-jwt-token` User token get after login API
+  - `dex-trader-addr` User's current legal trading address 
 
-Request: 
+- params
+  - `orderId` The id of the trading token pair.
+  - `pairId` The number of each page of user past orders to get.
+  - `nonce`
 
-```javascript
+**Simple Request**
+
+```yaml
 {
   orderId: '111',
   pairId: 'ETH_ADX',
@@ -340,7 +408,7 @@ Request:
 }
 ```
 
-response:
+**Simple response**
 
 ```javsscript
 {
@@ -351,15 +419,27 @@ response:
 
 ### Account APIs
 
-#### Login 登录（验证账户）
+#### Login
 
-Method:  `POST` 
+**Request** `POST /v1/placeorder` 
 
-URL: `/v1/authenticate` 
+- cookie
+  - `dex-user-jwt-token` User token get after login API
+  - `dex-trader-addr` User's current legal trading address 
 
-Request:  
+- params
+  - `amount` The id of the trading token pair.
+  - `price` The number of each page of user past orders to get.
+  - `action` The pages number to get
+  - `nonce`
+  - `sig` 
+  - `pairId` The pairid 
 
-```javascript
+**Request**`POST /v1/authenticate` 
+
+**Simple Request**
+
+```yaml
 {
   "email": '',
   "password": '',
@@ -368,45 +448,41 @@ Request:
 
 Reponse:
 
-```javascript
+```yaml
 {
   "token": '',
   "user": {},
 }
 ```
 
-#### register 注册
+#### register
 
-Method: `POST` 
+**Request**`POST /v1/register`
 
-URL: `/v1/register`
+**Simple Request**
 
-Request:  
-
-```javascript
+```yaml
 {
   "email": "",
   "password": "",
 }
 ```
 
-Reponse:
+**Simple Reponse**
 
-```javascript
+```yaml
 {
   "token": '',
 }
 ```
 
-#### Email Confirm 验证邮箱
+#### Email Confirm
 
-Method: `GET`
+**Request** `GET /v1/email/confirm` 
 
-URL `/v1/email/confirm` 
+ **Simple Request**
 
-Request:  
-
-```javascript
+```yaml
 {
   "token": "",
 }
@@ -414,20 +490,20 @@ Request:
 
 Reponse:
 
-```javascript
+```yaml
 {
 }
 ```
 
-#### Email Resend 重发邮件
+#### Email Resend
 
-Method: `GET`
+`GET`
 
-URL: `/v1/email/resend` 
+**Request**`/v1/email/resend` 
 
-Request:  
+ **Simple Request**
 
-```javascript
+```yaml
 {
   "email": "",
 }
@@ -435,20 +511,20 @@ Request:
 
 Reponse:
 
-```javascript
+```yaml
 {
 }
 ```
 
-#### Transfers 帐号充值提现历史
+#### Transfers
 
-Method: `POST`
+`POST`
 
-URL:  `/api/v1/transfers` 
+**Request** `/v1/transfers` 
 
-Request:  **sign needed**
+ **Simple Request**
 
-```javascript
+```yaml
 {
   trans_type: 'all', // Trans_enum: 1
   token: 'all', // Token type
@@ -457,9 +533,9 @@ Request:  **sign needed**
 }
 ```
 
-response:
+**Simple response**
 
-```javascript
+```yaml
 {
   data: [{
     trans_id: 1, // Unique trans id
@@ -490,34 +566,28 @@ response:
 }
 ```
 
-#### Balance 账户资产
+#### Balance
 
-Method: `GET`
-
-URL: `/api/v1/balances` 
+**Request** `GET /v1/balances` 
 
 Cookie: 
 
 ```
 dex-user-jwt-token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdGRDbGFpbXMiOnsiYXVkIjoiREV4IFNlcnZlcnMiLCJleHAiOjE1MjEyNjU3MTcsImp0aSI6ImEwY2VmNGQ0LTBmNWQtNDVmMS05MzYwLTkwOGQ0MmY1ZWMzYiIsImlhdCI6MTUyMTAwNjUxNywiaXNzIjoiREV4Iiwic3ViIjoiMiJ9fQ.r0kwUhMh8pZCGazZt0Lp4gPl1JEOdQIGyXlNpi5zHQ90NloUXNuEhlSRvSrTu5rug6nhkO_cbvIGc2okeC9zLQ; 
-// User token
-dex-user_id=2; 
-
-dex-user_email=flynn%40dex.top; 
 
 dex-trader-addr=0x6a83D834951F29924559B8146D11a70EaB8E328b
 // trader address of this operation
 ```
 
-Request: 
+**Simple Request**
 
 ```
-http://alpha.dex.top/api/v1/balances
+http://alpha.dex.top/v1/balances
 ```
 
-Response:
+**Simple Response**
 
-```javascript
+```yaml
 {
   "balances": [
     {
@@ -547,55 +617,25 @@ Response:
 
 ### Funding API
 
-#### Deposit 充值
+#### Withdraw 
 
-Method: `POST`
+**Request** `POST /v1/withdraw` 
 
-URL: `/api/v1/deposit`
+- tokenId:  Withdraw token id
+- amount: Withdraw Amount
 
-Request:  
+**Simple Request**
 
-```javascript
+```yaml
 {
-    // the address will sign 
-    traderAddr: "0x6a83D834951F29924559B8146D11a70EaB8E328b",
-    // token wants to trans
-    tokenId: "ETH",
-    // amount 
-    amount: "10.3"
-    
+  tokenId: 'ETH', 
+  amount: '11.11',
 }
 ```
 
-Reponse:
+**Simple response**
 
-```
-{
-}
-```
-
- Note: 此方法应用于Eth
-
-
-
-#### Withdraw 提现
-
-Method: `POST`
-
-URL:  `/api/v1/withdraw` 
-
-Request:  **sign needed**
-
-```javascript
-{
-  tokenId: 'ETH', // Withdraw token id
-  amount: '11.11', //Withdraw Amount
-}
-```
-
-response:
-
-```javascript
+```yaml
 {
 }
 ```
