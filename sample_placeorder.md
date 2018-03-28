@@ -21,7 +21,7 @@ Place an order.
 
 **Sample Request**
 
-```yaml
+```js
 {
   "amount": "1",
   "price": "0.0001",
@@ -35,7 +35,7 @@ Place an order.
 
 **Sample Response**
 
-```yaml
+```js
 {
   "order": {  // the placed order
     "orderId": "10000001",
