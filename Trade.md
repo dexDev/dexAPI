@@ -71,9 +71,9 @@ Place an order.
 
 ```js
 {
-  orderId: '111',
-  pairId: 'ETH_ADX',
-  nonce: 1,
+  "orderId":"10000002",
+  "pairId":"ETH_ADX",
+  "nonce":1522551099284,  // nonuce use timestamp in millisecond
 }
 ```
 
@@ -98,8 +98,8 @@ Place an order.
 
 ```js
 {
-  tokenId: 'ETH',
-  amount: '11.11',
+  "tokenId":"ETH",
+  "amount":"0.1",
 }
 ```
 
