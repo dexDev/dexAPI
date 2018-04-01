@@ -3,14 +3,14 @@
 
 #### PlaceOrder
 
-Place a trade order on current market
+Place an order.
 
-**Request** `POST /api/v1/placeorder`
+**Request** `POST /v1/placeorder`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in.
 
-- required params
+- Params
   - `traderAddr` Trader address
   - `pairId` Id of the trading token pair
   - `amount` Amount of token to buy or sell
@@ -46,7 +46,7 @@ Place a trade order on current market
     "amountTotal": "66.51501244",
     "amountFilled": "0.00000000",
     "filledAveragePrice": "0.00000000",
-    "status": "Unfilled",
+    "status": "Unfilled",  // "Filled" or "Unfilled" or "PartiallyFilled"
     "createTimeMs": "1522290652111",
     "updateTimeMs": "1522290652111",
     "nonce": "1522290645732"
@@ -60,7 +60,7 @@ Place a trade order on current market
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in.
-  
+
 - params
   - `traderAddr` Trader address
   - `orderId` The order id you want to cancel
@@ -85,7 +85,7 @@ Place a trade order on current market
 
 #### Withdraw
 
-**Request** `POST /v1/withdraw` 
+**Request** `POST /v1/withdraw`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in.
@@ -98,7 +98,7 @@ Place a trade order on current market
 
 ```js
 {
-  tokenId: 'ETH', 
+  tokenId: 'ETH',
   amount: '11.11',
 }
 ```
