@@ -39,17 +39,18 @@ Place an order.
 ```js
 {
   "order": {
-    "orderId": "10000051",
+    "orderId": "10000004",
     "pairId": "ETH_ADX",
     "action": "Buy",
-    "price": "0.00150342",
-    "amountTotal": "66.51501244",
+    "price": "0.01000000",
+    "amountTotal": "10.00000000",
     "amountFilled": "0.00000000",
     "filledAveragePrice": "0.00000000",
-    "status": "Unfilled",  // "Filled" or "Unfilled" or "PartiallyFilled"
-    "createTimeMs": "1522290652111",
-    "updateTimeMs": "1522290652111",
-    "nonce": "1522290645732"
+    "status": "Unfilled", // "Filled" or "Unfilled" or "PartiallyFilled"
+    "createTimeMs": "1522554774421",
+    "updateTimeMs": "1522554774421",
+    "expireTimeSec": "1522641169",
+    "nonce": "1522554769144"
   }
 }
 ```
@@ -71,9 +72,9 @@ Place an order.
 
 ```js
 {
-  "orderId":"10000002",
+  "orderId":"10000004",
   "pairId":"ETH_ADX",
-  "nonce":1522551099284,  // nonuce use timestamp in millisecond
+  "nonce":1522554949196,  // nonuce use timestamp in millisecond
 }
 ```
 
