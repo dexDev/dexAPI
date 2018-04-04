@@ -1,11 +1,8 @@
 # DEx Open API
-------
 
 # Trade APIs
 
 ## PlaceOrder
-
-Place an order .
 
 **Request** `POST /v1/placeorder`
 
@@ -56,6 +53,18 @@ Place an order .
   }
 }
 ```
+
+**Note**
+
+Signing Scheme 1 (Friendly to API usage)
+The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
+1. Prefix "\x19Ethereum Signed Message:\n70".
+2. String "DEx2 Order: " (Note the trailing whitespace)
+3. The market address.
+   This is for replay attack protection when we deploy a new market.
+4. <nonce>(64)
+5. <expireTimeSec>(64) <amountE8>(64) <priceE8>(64) <ioc>(8) <action>(8) <pairId>(32)
+
 
 ## CancelOrder
 
@@ -299,11 +308,156 @@ http://alpha.dex.top/v1/depth/ETH_ADX/5
 
 ## GetActiveOrders
 
+Get user's unfilled orders or partical filled orders on current wallet address
+
+**Request** `GET /v1/activeorders/:addr/:pairId/:size/:page` 
+
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in. 
+
+- params
+  - `pairId` The id of the trading token pair.
+  - `size` The number of each page of user active orders to get.
+  - `page` The pages number to get
+  - `addr` Trader eth address
+
+**Simple Request**
+
+```js
+http://alpha.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+```
+
+**Simple response**
+
+```js
+{
+  orders: [{
+    order_id: '334213', //Unique Order Id
+    pair_id: 'ETH_ADX', 
+    action: 1,
+    type: 'limit', // Order Type:
+    price: 1000,
+    amount_total: 6, //Total Amount（include filled and unfilled）
+    amount_filled: 3, // Filled amount
+    filled_total_price: 3000, // Filled price
+    create_time_ms: 12317, // Order create time
+    update_time_ms: 12317, // Last updated time
+    status: 1,
+    nonce: 12,
+  }],
+  total: 1,
+  page: 1
+}
+```
+
 ## GetPastOrders
 
+Get user's filled orders on current wallet address
 
-### Account APIs
+**Request**`POST /v1/pastorders/:addr/:pairId/:size/:page`
 
-#### Login
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in. 
 
-#### Balance
+- params
+  - `pairId` The id of the trading token pair.
+  - `size` The number of each page of user past orders to get.
+  - `page` The pages number to get
+  - `addr` Trader eth address
+
+**Simple Request**
+
+```js
+http://alpha.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+```
+
+**Simple response**
+
+```js
+{
+  orders: [{
+    order_id: '334213',
+    pair_id: 'ETH_ADX',
+    action: 1,
+    type: 'limit', // Order type
+    price: 1000,
+    amount_total: 6, //Total Amount（include filled and unfilled）
+    amount_filled: 3, // Filled amount
+    filled_total_price: 3000, // Filled price
+    create_time_ms: 12317, // Order create time
+    update_time_ms: 12317, // Last updated time
+    status: 1,
+    nonce: 12,
+  }],
+  total: 1,
+  page: 1
+}
+
+```
+
+# Account APIs
+
+## Login
+
+**Request**`POST /v1/authenticate` 
+
+**Simple Request**
+
+```js
+{
+  "email": 'flynn@dex.top',
+  "password": '**********',
+}
+```
+
+Reponse:
+
+```js
+{
+  "token": 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdGRDbGFpbXMiOnsiYXVkIjoiREV4IFNlcnZlcnMiLCJleHAiOjE1MjEyNjU3MTcsImp0aSI6ImEwY2VmNGQ0LTBmNWQtNDVmMS05MzYwLTkwOGQ0MmY1ZWMzYiIsImlhdCI6MTUyMTAwNjUxNywiaXNzIjoiREV4Iiwic3ViIjoiMiJ9fQ.r0kwUhMh8pZCGazZt0Lp4gPl1JEOdQIGyXlNpi5zHQ90NloUXNuEhlSRvSrTu5rug6nhkO_cbvIGc2okeC9zLQ',
+  "user": {
+
+  },
+}
+```
+
+## Balance
+
+**Request** `GET /v1/balances` 
+
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in.
+
+**Simple Request**
+
+```
+http://alpha.dex.top/v1/balances
+```
+
+**Simple Response**
+
+```js
+{
+  "balances": [
+    {
+      "tokenId": "ADX", // TokenId
+      "total": "0", // Token total amount
+      "active": "0", // Token amount can withdraw
+      "locked": "0" // Token amount is locked at this moment
+    },
+    {
+      "tokenId": "EOS",
+      "total": "0",
+      "active": "0",
+      "locked": "0"
+    },
+    {
+      "tokenId": "ETH",
+      "total": "1.00000000",
+      "active": "0.99790000",
+      "locked": "0.00210000"
+    }
+  ],
+  "estimatedValue": "" // Account total estimate value
+}
+```
