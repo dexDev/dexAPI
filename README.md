@@ -1,10 +1,11 @@
+# DEx Open API
+===
+
 # Account Prepare
 
 1. register a account by email on [https://alpha.dex.top](https://alpha.dex.top)
 2. binding trader address in account page.
 3. deposit eth or tokens in balance page.
-
-# DEx Open API
 
 # Trade APIs
 
