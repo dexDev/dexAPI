@@ -62,8 +62,8 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 2. String "DEx2 Order: " (Note the trailing whitespace)
 3. The market address.
    This is for replay attack protection when we deploy a new market.
-4. <nonce>(64)
-5. <expireTimeSec>(64) <amountE8>(64) <priceE8>(64) <ioc>(8) <action>(8) <pairId>(32)
+4. nonce(64)
+5. expireTimeSec(64) amountE8(64) priceE8(64) ioc(8) action(8) pairId(32)
 
 
 ## CancelOrder
