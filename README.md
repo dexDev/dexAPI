@@ -132,6 +132,57 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 # TradeInfo Public APIs
 
+## GetMarketInfo
+
+This API for getting important market infomation such as market contract address and token Code for signature
+
+**Request** `GET /v1/market` 
+
+
+**Simple Request**
+
+```http
+http://alpha.dex.top/v1/market
+```
+
+**simple Response**
+
+```js
+{
+  "marketAddr": "0x91952Ce7d434E84E8932AAB0F8A3f2E6A72F89a1", // Market Address for signature and deposit
+  "label": "NoneLabel",
+  "config": {
+    "makerFeeRateE4": "0",
+    "takerFeeRateE4": "0",
+    "withdrawFeeRateE4": "0",
+    "cashTokens": [
+      {
+        "tokenId": "ETH",
+        "tokenCode": 0,  // Cash Token Code for signature
+        "tokenAddr": "",
+        "scaleFactor": "1000000000000000000"
+      }
+    ],
+    "stockTokens": [
+      {
+        "tokenId": "BTM",
+        "tokenCode": 300, // Stock Token Code for signature
+        "tokenAddr": "0x45ddA1360019D2D26Bfa482A629a03f31A3a1A37",
+        "scaleFactor": "1000"
+      },
+      {
+        "tokenId": "OMG",
+        "tokenCode": 400,
+        "tokenAddr": "0x693f7fD5A8153A56bEc70189a1ae1943E07Be495",
+        "scaleFactor": "1000"
+      }
+    ]
+  },
+  "networkName": ""
+}
+```
+
+
 ## GetPairsByCash
 
 This API for getting realtime  trade infomation of  all pair of specific cashtoken such as ETH. This API data can get all tradepair realtime trade infomation.
@@ -430,10 +481,13 @@ Reponse:
 
 ## Balance
 
-**Request** `GET /v1/balances` 
+**Request** `GET /v1/balances/:traderAddr` 
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in.
+
+- params
+  - `traderAddr` Trader address
 
 **Simple Request**
 
