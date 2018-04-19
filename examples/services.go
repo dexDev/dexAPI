@@ -10,127 +10,34 @@
 package main
 
 import (
-	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"math/big"
-	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/dexDev/dexAPI/examples/models"
-	// For sig
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-var authenticateToken string
-var marketAddr string
-var TokenCodeBySymbol = map[string]uint16{}
-var dextopHost = "https://kovan.dex.top/"
-var testAccount = "flynn@dex.top"
-var testAccountPwd = "12345678a"
-var testTraderAddr = "0x6a83D834951F29924559B8146D11a70EaB8E328b"
-var testTraderAddrPriKey = "121e1348709ca0f75ea8793bbac27886afe6eb272c9a5245890aa7e4c64a65b9"
 
-// Http Request Util Fuction
-func request(Method string, Url string, Params map[string]string, Auth bool) string {
-	httpClient := &http.Client{}
+// DEx.top testnet api host
+var dextopTestnetHost = "https://kovan.dex.top/"
 
-	jsonParams := ""
-	if nil != Params {
-		bytesParams, _ := json.Marshal(Params)
-		jsonParams = string(bytesParams)
-	}
+// Test account
+const (
+ userName = "flynn@dex.top"
+ userPwd = "12345678a"
+ userBindingTraderAddr = "0x6a83D834951F29924559B8146D11a70EaB8E328b"
+ userBingdingTraderPriKey = "121e1348709ca0f75ea8793bbac27886afe6eb272c9a5245890aa7e4c64a65b9"
+)
 
-	request, err := http.NewRequest(Method, Url, strings.NewReader(jsonParams))
-	if nil != err {
-		return err.Error()
-	}
-
-	if Auth && authenticateToken != "" {
-		request.Header.Add("Authorization", "Bearer "+authenticateToken)
-	}
-
-	response, err := httpClient.Do(request)
-	defer response.Body.Close()
-	if nil != err {
-		return err.Error()
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
-	if nil != err {
-		return err.Error()
-	}
-
-	fmt.Printf("%s\n%s\n", Url, body)
-	return string(body)
-}
-
-// Signature Utils
-func Uint64ToBigEndianBytes(value uint64) []byte {
-	bs := make([]byte, 8)
-	binary.BigEndian.PutUint64(bs, value)
-	return bs
-}
-
-func Uint32ToBigEndianBytes(value uint32) []byte {
-	bs := make([]byte, 4)
-	binary.BigEndian.PutUint32(bs, value)
-	return bs
-}
-
-// The returned bytes are to be hashed (using keccak256) for signing. The content are the
-// concatenation of the following (uints are in big-endian byte order):
-//
-// 1. String "DEx2 Order: "(96)  (Note the trailing whitespace)
-// 2. <market address>(160)      (For preventing cross-market replay attack)
-// 3. <nonce>(64) <expireTimeSec>(64) <amountE8>(64) <priceE8>(64) <ioc>(8) <action>(8) <pairId>(32)
-func GetOrderBytesToSign(marketAddr common.Address, nonce uint64, order *models.Order) []byte {
-	bs := make([]byte, 0, 98)
-	bs = append(bs, []byte("\x19Ethereum Signed Message:\n70")...)
-	bs = append(bs, []byte("DEx2 Order: ")...)
-	bs = append(bs, marketAddr.Bytes()...)
-	bs = append(bs, Uint64ToBigEndianBytes(nonce)...)
-	bs = append(bs, Uint64ToBigEndianBytes(order.ExpireTimeSec)...)
-	bs = append(bs, Uint64ToBigEndianBytes(order.AmountE8)...)
-	bs = append(bs, Uint64ToBigEndianBytes(order.PriceE8)...)
-	bs = append(bs, order.Ioc)
-	bs = append(bs, order.Action)
-	bs = append(bs, Uint32ToBigEndianBytes(order.PairId)...)
-
-	if len(bs) != 98 { // 784 bits
-		fmt.Printf("The byte length of signing an order must be 98, but got ", len(bs))
-	}
-	return bs
-}
-
-func StringToUint64E8(x string) uint64 {
-	r := new(big.Rat)
-	if _, err := fmt.Sscan(x, r); err != nil {
-		return 0
-	}
-	r.Mul(r, big.NewRat(1e8, 1))
-	if !r.IsInt() {
-		return 0
-	}
-
-	val := r.Num()
-	if !val.IsUint64() {
-		return 0
-	}
-	return val.Uint64()
-}
-
-func GetPairCode(pairId string) uint32 {
-	tokens := strings.Split(pairId, "_")
-	cashCode := TokenCodeBySymbol[tokens[0]]
-	stockCode := TokenCodeBySymbol[tokens[1]]
-
-	return (uint32(cashCode) << 16) | uint32(stockCode)
-}
+// Cache user auth token and market related information
+var (
+	authenticateToken string
+	marketAddr string
+	TokenCodeBySymbol = make(map[string]uint16)
+)
 
 //-------------------------------------
 // Public Info API
@@ -162,10 +69,9 @@ func GetPairDepth(PairId string, Count int) {
 	json.Unmarshal([]byte(body), &GetPairDepthResponse)
 }
 
-// Get MarketInfo, Important!!! Including cashcode and tokencode for placeorder
-//
+// Market information contains the token's code, these are the necessary information when placing orders,
+// where we cache them in this `TokenCodeBySymbol` map.
 func GetMarket() models.MarketInfo {
-
 	MarketInfo := models.MarketInfo{}
 	requestUrl := dextopHost + "v1/market"
 	body := request("GET", requestUrl, nil, false)
@@ -244,7 +150,7 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	// market address
 	addr := common.HexToAddress(marketAddr)
 	// trans signature info into bytes
-	bytesToSign := GetOrderBytesToSign(addr, uint64(nonce), order)
+	bytesToSign := getOrderBytesToSign(addr, uint64(nonce), order)
 	hash := crypto.Keccak256(bytesToSign)
 	// trader addr private key
 	traderPrivKey, err := crypto.HexToECDSA(testTraderAddrPriKey)
@@ -289,21 +195,18 @@ func GetPastOrders(TraderAddr string, PairId string, Size int, Page int) {
 }
 
 func main() {
-
-	// Public API
+	// Public apis do not require token and signature
+	GetMarket()
 	GetPairsByCash("ETH")
 	GetPairDepth("ETH_BTM", 10)
 
-	GetMarket()
-	// Account API need token
 	Login(testAccount, testAccountPwd)
-	GetBalance(testTraderAddr)
 
-	// PlaceOrder need token and sig
+	// Place order requires signature the order information
 	PlaceOrder(testTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
 
-	// Account Trade Info API need token
+	// Account related information needs token
+	GetBalance(testTraderAddr)
 	GetActiveOrders(testTraderAddr, "ETH_BTM", 10, 1)
 	GetPastOrders(testTraderAddr, "ETH_BTM", 10, 1)
-
 }
