@@ -11,18 +11,18 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/dexDev/dexAPI/examples/models"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
+	"fmt"
 )
 
 
 // DEx.top testnet api host
-var dextopTestnetHost = "https://kovan.dex.top/"
+var dextopTestnetHost = "https://kovan.dex.top"
 
 // Test account
 const (
@@ -36,58 +36,63 @@ const (
 var (
 	authenticateToken string
 	marketAddr string
-	TokenCodeBySymbol = make(map[string]uint16)
+	tokenCodesById = make(map[string]uint16)
 )
 
-//-------------------------------------
-// Public Info API
-//
-// Get PairInfo By CashId like ETH
-// return PairInfo Array
-func GetPairsByCash(CashId string) models.GetPairsByCashResponse {
-
-	GetPairsByCashResponse := models.GetPairsByCashResponse{}
-
-	requestUrl := dextopHost + "v1/pairlist/" + CashId
-
-	body := request("GET", requestUrl, nil, false)
-
-	json.Unmarshal([]byte(body), &GetPairsByCashResponse)
-
-	fmt.Printf("%+v", GetPairsByCashResponse)
-	return GetPairsByCashResponse
-}
-
-// Get Depth
-//
-func GetPairDepth(PairId string, Count int) {
-
-	GetPairDepthResponse := models.GetPairDepthResponse{}
-	requestUrl := dextopHost + "v1/depth/" + PairId + "/" + strconv.Itoa(Count)
-
-	body := request("GET", requestUrl, nil, false)
-	json.Unmarshal([]byte(body), &GetPairDepthResponse)
-}
-
 // Market information contains the token's code, these are the necessary information when placing orders,
-// where we cache them in this `TokenCodeBySymbol` map.
-func GetMarket() models.MarketInfo {
-	MarketInfo := models.MarketInfo{}
-	requestUrl := dextopHost + "v1/market"
-	body := request("GET", requestUrl, nil, false)
-	json.Unmarshal([]byte(body), &MarketInfo)
-
-	marketAddr = MarketInfo.MarketAddr
-
-	for _, v := range MarketInfo.Config.CashTokens {
-		TokenCodeBySymbol[v.TokenId] = v.TokenCode
+// where we cache them in this `tokenCodesById` map.
+func GetMarket() (*models.Market, error) {
+	market := models.Market{}
+	resp, err := httpRequest("GET", dextopTestnetHost + "/v1/market", nil, false)
+	if err != nil {
+		return nil, err
 	}
-	for _, v := range MarketInfo.Config.StockTokens {
-		TokenCodeBySymbol[v.TokenId] = v.TokenCode
+	if err := json.Unmarshal(resp, &market); err != nil {
+		return nil, err
 	}
-	fmt.Printf("%+v", MarketInfo)
-	return MarketInfo
+
+	marketAddr = market.MarketAddr
+	for _, v := range market.Config.CashTokens {
+		tokenCodesById[v.TokenId] = v.TokenCode
+	}
+	for _, v := range market.Config.StockTokens {
+		tokenCodesById[v.TokenId] = v.TokenCode
+	}
+	return &market, nil
 }
+
+// TODO: do we need to define a struct for the corresponding normal json response
+
+// Get all pair information for the specified cash token.
+func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) {
+	getPairsByCashResponse := models.GetPairsByCashResponse{}
+	resp, err := httpRequest("GET", dextopTestnetHost + "/v1/pairlist" + cashTokenId, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(resp, &getPairsByCashResponse); err != nil {
+		return nil, err
+	}
+
+	return &getPairsByCashResponse, nil
+}
+
+// Get the depth data of a certain transaction pair
+func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error){
+	getPairDepthResponse := models.GetPairDepthResponse{}
+	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost + "/v1/depth", pairId, size)
+	resp, err := httpRequest("GET", url, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(resp, &getPairDepthResponse); err != nil {
+		return nil, err
+	}
+
+	return &getPairDepthResponse, nil
+}
+
+
 
 //---------------------
 

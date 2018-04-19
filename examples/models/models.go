@@ -63,7 +63,7 @@ type MarketConfig struct {
 	StockTokens []TokenInfo `json: "stockTokens"`
 }
 
-type MarketInfo struct {
+type Market struct {
 	MarketAddr string       `json: "marketAddr"`
 	Config     MarketConfig `json: "config"`
 }
