@@ -1,15 +1,15 @@
 package main
 
 import (
-	"io/ioutil"
-	"net/http"
-	"encoding/json"
-	"strings"
 	"encoding/binary"
-	"github.com/dexDev/dexAPI/examples/models"
+	"encoding/json"
 	"fmt"
-	"math/big"
+	"github.com/dexDev/dexAPI/examples/models"
 	"github.com/ethereum/go-ethereum/common"
+	"io/ioutil"
+	"math/big"
+	"net/http"
+	"strings"
 )
 
 func httpRequest(method string, url string, params map[string]string, auth bool) ([]byte, error) {
@@ -77,8 +77,7 @@ func uint32ToBigEndianBytes(value uint32) []byte {
 	return bs
 }
 
-
-func StringToUint64E8(x string) uint64 {
+func stringToUint64E8(x string) uint64 {
 	r := new(big.Rat)
 	if _, err := fmt.Sscan(x, r); err != nil {
 		return 0
@@ -95,10 +94,13 @@ func StringToUint64E8(x string) uint64 {
 	return val.Uint64()
 }
 
-func GetPairCode(pairId string) uint32 {
+func getPairCode(pairId string) uint32 {
 	tokens := strings.Split(pairId, "_")
-	cashCode := TokenCodeBySymbol[tokens[0]]
-	stockCode := TokenCodeBySymbol[tokens[1]]
+	if len(tokens) != 2 {
+		panic("Invalid tokens")
+	}
+	cashCode := tokenCodesById[tokens[0]]
+	stockCode := tokenCodesById[tokens[1]]
 
 	return (uint32(cashCode) << 16) | uint32(stockCode)
 }

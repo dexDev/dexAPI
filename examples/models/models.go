@@ -2,6 +2,8 @@
 //
 package models
 
+// TODO: more models and more detail descriptions
+
 type PlaceOrderRequest struct {
 	Amount        string `json:"amount"`
 	Price         string `json:"price"`

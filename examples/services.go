@@ -1,12 +1,3 @@
-/** Account prepare
-
-  1. register a account by email on https://kovan.dex.top
-  2. binding trader address in account page.
-  3. deposit eth or tokens in balance page.
-
-**/
-// orders example
-
 package main
 
 import (
@@ -14,36 +5,40 @@ import (
 	"strconv"
 	"time"
 
+	"fmt"
 	"github.com/dexDev/dexAPI/examples/models"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"fmt"
 )
 
+// NOTE: Preparation
+//- 1. Register an account using email on https://kovan.dex.top
+//- 2. Binding trader address in the account page
+//- 3. Deposit eth or stock tokens in the balance page
 
 // DEx.top testnet api host
 var dextopTestnetHost = "https://kovan.dex.top"
 
 // Test account
 const (
- userName = "flynn@dex.top"
- userPwd = "12345678a"
- userBindingTraderAddr = "0x6a83D834951F29924559B8146D11a70EaB8E328b"
- userBingdingTraderPriKey = "121e1348709ca0f75ea8793bbac27886afe6eb272c9a5245890aa7e4c64a65b9"
+	userName                 = "flynn@dex.top"
+	userPwd                  = "12345678a"
+	userBindingTraderAddr    = "0x6a83D834951F29924559B8146D11a70EaB8E328b"
+	userBingdingTraderPriKey = "121e1348709ca0f75ea8793bbac27886afe6eb272c9a5245890aa7e4c64a65b9"
 )
 
 // Cache user auth token and market related information
 var (
 	authenticateToken string
-	marketAddr string
-	tokenCodesById = make(map[string]uint16)
+	marketAddr        string
+	tokenCodesById    = make(map[string]uint16)
 )
 
 // Market information contains the token's code, these are the necessary information when placing orders,
 // where we cache them in this `tokenCodesById` map.
 func GetMarket() (*models.Market, error) {
 	market := models.Market{}
-	resp, err := httpRequest("GET", dextopTestnetHost + "/v1/market", nil, false)
+	resp, err := httpRequest("GET", dextopTestnetHost+"/v1/market", nil, false)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +61,7 @@ func GetMarket() (*models.Market, error) {
 // Get all pair information for the specified cash token.
 func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) {
 	getPairsByCashResponse := models.GetPairsByCashResponse{}
-	resp, err := httpRequest("GET", dextopTestnetHost + "/v1/pairlist" + cashTokenId, nil, false)
+	resp, err := httpRequest("GET", dextopTestnetHost+"/v1/pairlist"+cashTokenId, nil, false)
 	if err != nil {
 		return nil, err
 	}
@@ -78,9 +73,10 @@ func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) 
 }
 
 // Get the depth data of a certain transaction pair
-func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error){
+// TODO: define depth response
+func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
 	getPairDepthResponse := models.GetPairDepthResponse{}
-	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost + "/v1/depth", pairId, size)
+	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)
 	resp, err := httpRequest("GET", url, nil, false)
 	if err != nil {
 		return nil, err
@@ -92,45 +88,36 @@ func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error)
 	return &getPairDepthResponse, nil
 }
 
-
-
-//---------------------
-
-// Account API
-// Login Token Get Header token
-func Login(Email string, Password string) models.LoginResponse {
-
-	LoginResponse := models.LoginResponse{}
-
-	requestUrl := dextopHost + "v1/authenticate"
+// Login and get auth token
+func Login(email string, password string) (*models.LoginResponse, error) {
+	loginResponse := models.LoginResponse{}
 
 	mapParams := make(map[string]string)
-	mapParams["email"] = Email
-	mapParams["password"] = Password
+	mapParams["email"] = email
+	mapParams["password"] = password
 
-	body := request("POST", requestUrl, mapParams, false)
+	resp, err := httpRequest("POST", dextopTestnetHost+"/v1/authenticate", mapParams, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(resp, &loginResponse); err != nil {
+		return nil, err
+	}
 
-	json.Unmarshal([]byte(body), &LoginResponse)
-
-	authenticateToken = LoginResponse.Token
-
-	return LoginResponse
+	authenticateToken = loginResponse.Token
+	return &loginResponse, nil
 }
 
-// Get Account Balance of traderAddr which has been binded
-func GetBalance(TraderAddr string) {
-	requestUrl := dextopHost + "v1/balances/" + TraderAddr
-	request("GET", requestUrl, nil, true)
+// Get account balances of a trader
+// TODO: more implementation
+func GetBalance(traderAddr string) {
+	url := dextopTestnetHost + "v1/balances/" + traderAddr
+	httpRequest("GET", url, nil, true)
 }
 
-//---------------------
-// Trade API
-
-func PlaceOrder(traderAddr string, pairId string, action string, price string, amount string) {
-
-	requestUrl := dextopHost + "v1/placeorder"
-
-	// order action
+// Place an order
+// TODO: more implementation, return the placed order
+func PlaceOrder(traderAddr string, pairId string, action string, price string, amount string) error {
 	pbAction := 0
 	switch action {
 	case "Buy":
@@ -138,37 +125,31 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	case "Sell":
 		pbAction = 2
 	}
-
 	expireTimeSec := time.Now().Unix() + 3600
 	nonce := time.Now().UnixNano() / 1e6
 
-	// singuare order body
+	// Signature the order body content
 	order := &models.Order{
-		PairId:        GetPairCode(pairId),
+		PairId:        getPairCode(pairId),
 		Action:        byte(pbAction) - 1,
 		Ioc:           0,
-		PriceE8:       StringToUint64E8(price),
-		AmountE8:      StringToUint64E8(amount),
+		PriceE8:       stringToUint64E8(price),
+		AmountE8:      stringToUint64E8(amount),
 		ExpireTimeSec: uint64(expireTimeSec),
 	}
-
-	// market address
-	addr := common.HexToAddress(marketAddr)
-	// trans signature info into bytes
+	addr := common.HexToAddress(marketAddr) // market addr
 	bytesToSign := getOrderBytesToSign(addr, uint64(nonce), order)
 	hash := crypto.Keccak256(bytesToSign)
-	// trader addr private key
-	traderPrivKey, err := crypto.HexToECDSA(testTraderAddrPriKey)
+	traderPrivKey, err := crypto.HexToECDSA(userBingdingTraderPriKey) // user private key
 	if err != nil {
-		return
+		return err
 	}
-	// Signed
-	sig, err := crypto.Sign(hash, traderPrivKey)
+	sig, err := crypto.Sign(hash, traderPrivKey) // signature the hash
 	if err != nil {
-		return
+		return err
 	}
 
-	// Place Order request Params
+	// Place order request params
 	mapParams := make(map[string]string)
 	mapParams["pairId"] = pairId
 	mapParams["traderAddr"] = traderAddr
@@ -179,39 +160,24 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	mapParams["nonce"] = strconv.FormatInt(nonce, 10)
 	mapParams["sig"] = common.ToHex(sig)
 
-	if err != nil {
-		return
-	}
-
-	request("POST", requestUrl, mapParams, true)
-
+	_, err = httpRequest("POST", dextopTestnetHost+"/v1/placeorder", mapParams, true)
+	return err
 }
 
-func GetActiveOrders(TraderAddr string, PairId string, Size int, Page int) {
-	requestUrl := dextopHost + "v1/activeorders/" + TraderAddr + "/" + PairId + "/" + strconv.Itoa(Size) + "/" + strconv.Itoa(Page)
-	request("GET", requestUrl, nil, true)
-
+// Get active orders of a specified trader address
+// TODO: more implementation
+func GetActiveOrders(traderAddr string, pairId string, size int, page int) error {
+	url := fmt.Sprintf("%s/%s/%s/%d/%d", /* apiPath/traderAddr/pairId/size/page */
+		dextopTestnetHost+"/v1/activeorders", traderAddr, pairId, size, page)
+	_, err := httpRequest("GET", url, nil, true)
+	return err
 }
 
-func GetPastOrders(TraderAddr string, PairId string, Size int, Page int) {
-	requestUrl := dextopHost + "v1/pastorders/" + TraderAddr + "/" + PairId + "/" + strconv.Itoa(Size) + "/" + strconv.Itoa(Page)
-	request("GET", requestUrl, nil, true)
-
-}
-
-func main() {
-	// Public apis do not require token and signature
-	GetMarket()
-	GetPairsByCash("ETH")
-	GetPairDepth("ETH_BTM", 10)
-
-	Login(testAccount, testAccountPwd)
-
-	// Place order requires signature the order information
-	PlaceOrder(testTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
-
-	// Account related information needs token
-	GetBalance(testTraderAddr)
-	GetActiveOrders(testTraderAddr, "ETH_BTM", 10, 1)
-	GetPastOrders(testTraderAddr, "ETH_BTM", 10, 1)
+// Get past orders of a specified trader address
+// TODO: more implementation
+func GetPastOrders(traderAddr string, pairId string, size int, page int) error {
+	url := fmt.Sprintf("%s/%s/%s/%d/%d", /* apiPath/traderAddr/pairId/size/page */
+		dextopTestnetHost+"/v1/pastorders", traderAddr, pairId, size, page)
+	_, err := httpRequest("GET", url, nil, true)
+	return err
 }
