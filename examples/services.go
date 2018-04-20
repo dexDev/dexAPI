@@ -72,21 +72,21 @@ func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) 
 	return &getPairsByCashResponse, nil
 }
 
-// Get the depth data of a certain transaction pair
-// TODO: define depth response
-//func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
-//	getPairDepthResponse := models.GetPairDepthResponse{}
-//	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)
-//	resp, err := httpRequest("GET", url, nil, false)
-//	if err != nil {
-//		return nil, err
-//	}
-//	if err := json.Unmarshal(resp, &getPairDepthResponse); err != nil {
-//		return nil, err
-//	}
-//
-//	return &getPairDepthResponse, nil
-//}
+//Get the depth data of a certain transaction pair
+//TODO: define depth response
+func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
+	getPairDepthResponse := models.GetPairDepthResponse{}
+	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)
+	resp, err := httpRequest("GET", url, nil, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(resp, &getPairDepthResponse); err != nil {
+		return nil, err
+	}
+
+	return &getPairDepthResponse, nil
+}
 
 // Login and get auth token
 func Login(email string, password string) (*models.LoginResponse, error) {

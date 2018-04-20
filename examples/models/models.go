@@ -15,7 +15,20 @@ type PlaceOrderRequest struct {
 	ExpireTimeSec int    `json:"expireTimeSec"`
 }
 
-type PlaceOrderResponse struct {
+type GetPairDepthResponse struct {
+	DepthInfo DepthInfo `json: "depth"`
+}
+
+type DepthInfo struct {
+	PairId string  `json: "pairId"`
+	TimeMs string  `json: "timeMs"`
+	Asks   []Depth `json: "asks"`
+	Bids   []Depth `json: "bids"`
+}
+
+type Depth struct {
+	Price  string `json: "price"`
+	Amount string `json: "Amount"`
 }
 
 type PairInfo struct {
