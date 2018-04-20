@@ -61,7 +61,7 @@ func GetMarket() (*models.Market, error) {
 // Get all pair information for the specified cash token.
 func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) {
 	getPairsByCashResponse := models.GetPairsByCashResponse{}
-	resp, err := httpRequest("GET", dextopTestnetHost+"/v1/pairlist"+cashTokenId, nil, false)
+	resp, err := httpRequest("GET", dextopTestnetHost+"/v1/pairlist/"+cashTokenId, nil, false)
 	if err != nil {
 		return nil, err
 	}
@@ -74,19 +74,19 @@ func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) 
 
 // Get the depth data of a certain transaction pair
 // TODO: define depth response
-func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
-	getPairDepthResponse := models.GetPairDepthResponse{}
-	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)
-	resp, err := httpRequest("GET", url, nil, false)
-	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(resp, &getPairDepthResponse); err != nil {
-		return nil, err
-	}
-
-	return &getPairDepthResponse, nil
-}
+//func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
+//	getPairDepthResponse := models.GetPairDepthResponse{}
+//	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)
+//	resp, err := httpRequest("GET", url, nil, false)
+//	if err != nil {
+//		return nil, err
+//	}
+//	if err := json.Unmarshal(resp, &getPairDepthResponse); err != nil {
+//		return nil, err
+//	}
+//
+//	return &getPairDepthResponse, nil
+//}
 
 // Login and get auth token
 func Login(email string, password string) (*models.LoginResponse, error) {
@@ -161,6 +161,7 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	mapParams["sig"] = common.ToHex(sig)
 
 	_, err = httpRequest("POST", dextopTestnetHost+"/v1/placeorder", mapParams, true)
+	// TODO: check response
 	return err
 }
 
