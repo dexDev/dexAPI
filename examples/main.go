@@ -26,12 +26,12 @@ func main() {
 	}
 
 	// Place order requires signature the order information
-	err = PlaceOrder(userBindingTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
+	resp, err := PlaceOrder(userBindingTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
 	if err != nil {
 		fmt.Println("Place order failed. ", err)
 		return
 	}
-	fmt.Println("Order placed")
+	fmt.Printf("Place Order result: \n%s\n", resp)
 
 	// Account related information needs token
 	GetBalance(userBindingTraderAddr)

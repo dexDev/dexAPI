@@ -117,7 +117,7 @@ func GetBalance(traderAddr string) {
 
 // Place an order
 // TODO: more implementation, return the placed order
-func PlaceOrder(traderAddr string, pairId string, action string, price string, amount string) error {
+func PlaceOrder(traderAddr string, pairId string, action string, price string, amount string) (resp string, err error) {
 	pbAction := 0
 	switch action {
 	case "Buy":
@@ -142,11 +142,11 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	hash := crypto.Keccak256(bytesToSign)
 	traderPrivKey, err := crypto.HexToECDSA(userBingdingTraderPriKey) // user private key
 	if err != nil {
-		return err
+		return resp, err
 	}
 	sig, err := crypto.Sign(hash, traderPrivKey) // signature the hash
 	if err != nil {
-		return err
+		return resp, err
 	}
 
 	// Place order request params
@@ -160,9 +160,8 @@ func PlaceOrder(traderAddr string, pairId string, action string, price string, a
 	mapParams["nonce"] = strconv.FormatInt(nonce, 10)
 	mapParams["sig"] = common.ToHex(sig)
 
-	_, err = httpRequest("POST", dextopTestnetHost+"/v1/placeorder", mapParams, true)
-	// TODO: check response
-	return err
+	respBytes, err := httpRequest("POST", dextopTestnetHost+"/v1/placeorder", mapParams, true)
+	return string(respBytes), err
 }
 
 // Get active orders of a specified trader address
