@@ -21,10 +21,10 @@ var dextopTestnetHost = "https://kovan.dex.top"
 
 // Test account
 const (
-	userName                 = "flynn@dex.top"
-	userPwd                  = "12345678a"
-	userBindingTraderAddr    = "0x6a83D834951F29924559B8146D11a70EaB8E328b"
-	userBingdingTraderPriKey = "121e1348709ca0f75ea8793bbac27886afe6eb272c9a5245890aa7e4c64a65b9"
+	userName                 = "" // test@dex.top
+	userPwd                  = "" // 12345678a
+	userBindingTraderAddr    = "" // 0x6a83D834951F29924559B8146D11a70EaB8E328b
+	userBingdingTraderPriKey = "" // string privatekey
 )
 
 // Cache user auth token and market related information
