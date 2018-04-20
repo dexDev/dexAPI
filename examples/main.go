@@ -1,15 +1,37 @@
 package main
 
+import "fmt"
+
 func main() {
 	// Public apis do not require token and signature
-	GetMarket()
-	GetPairsByCash("ETH")
-	GetPairDepth("ETH_BTM", 10)
+	market, err := GetMarket()
+	if err != nil {
+		fmt.Println("Get market failed. ", err)
+		return
+	}
+	fmt.Printf("Market: \n%+v\n", *market)
 
-	Login(userName, userPwd)
+	pairs, err := GetPairsByCash("ETH")
+	if err != nil {
+		fmt.Println("Get pairs failed. ", err)
+		return
+	}
+	fmt.Printf("Pairs information: \n%+v\n", *pairs)
+
+	//GetPairDepth("ETH_BTM", 10)
+
+	if _, err := Login(userName, userPwd); err != nil {
+		fmt.Println("Login failed. ", err)
+		return
+	}
 
 	// Place order requires signature the order information
-	PlaceOrder(userBindingTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
+	err = PlaceOrder(userBindingTraderAddr, "ETH_BTM", "Buy", "0.00001", "10000")
+	if err != nil {
+		fmt.Println("Place order failed. ", err)
+		return
+	}
+	fmt.Println("Order placed")
 
 	// Account related information needs token
 	GetBalance(userBindingTraderAddr)
