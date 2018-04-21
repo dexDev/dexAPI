@@ -73,7 +73,6 @@ func GetPairsByCash(cashTokenId string) (*models.GetPairsByCashResponse, error) 
 }
 
 //Get the depth data of a certain transaction pair
-//TODO: define depth response
 func GetPairDepth(pairId string, size int) (*models.GetPairDepthResponse, error) {
 	getPairDepthResponse := models.GetPairDepthResponse{}
 	url := fmt.Sprintf("%s/%s/%d", dextopTestnetHost+"/v1/depth", pairId, size)

@@ -18,7 +18,7 @@ func main() {
 	}
 	fmt.Printf("Pairs information: \n%+v\n", *pairs)
 
-	//GetPairDepth("ETH_BTM", 10)
+	GetPairDepth("ETH_BTM", 10)
 
 	if _, err := Login(userName, userPwd); err != nil {
 		fmt.Println("Login failed. ", err)
