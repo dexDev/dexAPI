@@ -3,7 +3,7 @@
 
 # Account Prepare
 
-1. register a account by email on [https://alpha.dex.top](https://alpha.dex.top)
+1. register a account by email on [https://kovan.dex.top](https://kovan.dex.top)
 2. binding trader address in account page.
 3. deposit eth or tokens in balance page.
 
@@ -142,7 +142,7 @@ This API for getting important market infomation such as market contract address
 **Simple Request**
 
 ```http
-http://alpha.dex.top/v1/market
+http://kovan.dex.top/v1/market
 ```
 
 **simple Response**
@@ -194,7 +194,7 @@ This API for getting realtime  trade infomation of  all pair of specific cashtok
 **Simple Request**
 
 ```http
-http://alpha.dex.top/v1/pairlist/ETH
+http://kovan.dex.top/v1/pairlist/ETH
 ```
 
 **simple Response**
@@ -227,7 +227,7 @@ Simple TradePair realtime data API by pairId
 **Simple Request**
 
 ```http
-http://alpha.dex.top/v1/pairlist/ETH_ADX
+http://kovan.dex.top/v1/pairlist/ETH_ADX
 ```
 
 **Simple Response**
@@ -257,7 +257,7 @@ Get recent trades by PairId sort by trade time
 **Simple Request**
 
 ```http
-http://alpha.dex.top/v1/tradehistory/ETH_ADX/3
+http://kovan.dex.top/v1/tradehistory/ETH_ADX/3
 ```
 
 **Simple Response**
@@ -302,7 +302,7 @@ http://alpha.dex.top/v1/tradehistory/ETH_ADX/3
 **Simple Request**
 
 ```http
-http://alpha.dex.top/v1/depth/ETH_ADX/5
+http://kovan.dex.top/v1/depth/ETH_ADX/5
 ```
 
 **Simple Reponse**:
@@ -382,7 +382,7 @@ Get user's unfilled orders or partical filled orders on current wallet address
 **Simple Request**
 
 ```js
-http://alpha.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
 ```
 
 **Simple response**
@@ -426,7 +426,7 @@ Get user's filled orders on current wallet address
 **Simple Request**
 
 ```js
-http://alpha.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
 ```
 
 **Simple response**
@@ -492,7 +492,7 @@ Reponse:
 **Simple Request**
 
 ```
-http://alpha.dex.top/v1/balances
+http://kovan.dex.top/v1/balances
 ```
 
 **Simple Response**
