@@ -52,7 +52,7 @@
     "amountTotal": "10.00000000",
     "amountFilled": "0.00000000",
     "filledAveragePrice": "0.00000000",
-    "status": "Unfilled", // "Filled" or "Unfilled" or "PartiallyFilled"
+    "status": "Unfilled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
     "createTimeMs": "1522554774421",
     "updateTimeMs": "1522554774421",
     "expireTimeSec": "1522641169",
@@ -400,7 +400,7 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
     filled_total_price: 3000, // Filled price
     create_time_ms: 12317, // Order create time
     update_time_ms: 12317, // Last updated time
-    status: 1,
+    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
     nonce: 12,
   }],
   total: 1,
@@ -444,7 +444,7 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
     filled_total_price: 3000, // Filled price
     create_time_ms: 12317, // Order create time
     update_time_ms: 12317, // Last updated time
-    status: 1,
+    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
     nonce: 12,
   }],
   total: 1,
