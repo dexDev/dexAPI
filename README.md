@@ -412,7 +412,7 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
 
 Get user's filled orders on current wallet address
 
-**Request**`POST /v1/pastorders/:addr/:pairId/:size/:page`
+**Request** `GET /v1/pastorders/:addr/:pairId/:size/:page`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in. 
