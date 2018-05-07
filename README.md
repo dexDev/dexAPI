@@ -227,7 +227,7 @@ Simple TradePair realtime data API by pairId
 **Simple Request**
 
 ```http
-http://kovan.dex.top/v1/pairlist/ETH_ADX
+http://kovan.dex.top/v1/pairinfo/ETH_ADX
 ```
 
 **Simple Response**
