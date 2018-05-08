@@ -92,7 +92,34 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 {
   "orderId":"10000004",
   "pairId":"ETH_ADX",
-  "nonce":1522554949196,  // nonuce use timestamp in millisecond
+  "nonce":1522554949196,  // nonce use timestamp in millisecond
+}
+```
+
+**Simple response**
+
+```js
+{}
+```
+
+## CancelAllOrders
+
+**Request**`POST /v1/cancelallorders`
+
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in.
+
+- params
+  - `traderAddr` Trader address
+  - `pairId` The id of the trading token pair
+  - `nonce` Order nonce. Recommended value is the current timestamp in millisecond.
+
+**Simple Request**
+
+```js
+{
+  "pairId":"ETH_ADX",
+  "nonce":1522554949196,  // nonce use timestamp in millisecond
 }
 ```
 
@@ -353,7 +380,7 @@ http://kovan.dex.top/v1/depth/ETH_ADX/5
         "price": "0.00144436",
         "amount": "78.00000000"
       },
-      s        "price": "0.00140912",
+        "price": "0.00140912",
         "amount": "753.35833123"
       }
     ]
@@ -412,7 +439,7 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
 
 Get user's filled orders on current wallet address
 
-**Request** `GET /v1/pastorders/:addr/:pairId/:size/:page`
+**Request** `GET /v1/pastorders/:addr/:pairId/:size/:page?from_time_sec=&to_time_sec=`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when sign in. 
@@ -422,11 +449,15 @@ Get user's filled orders on current wallet address
   - `size` The number of each page of user past orders to get.
   - `page` The pages number to get
   - `addr` Trader eth address
+ 
+- optional params
+  - `from_time_sec` Timestamp in sec to get past orders from INCLUSIVE
+  - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE 
 
 **Simple Request**
 
 ```js
-http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+http://kovan.dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1?from_time_sec=1498793709&to_time_sec=1498794709
 ```
 
 **Simple response**
@@ -449,6 +480,97 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
   }],
   total: 1,
   page: 1
+}
+
+```
+
+## GetOrderById
+
+Get order of the specified order id
+
+**Request** `GET /v1/orderbyid/:orderId`
+
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in. 
+
+- params
+  - `orderId` The id of the order.
+
+**Simple Request**
+
+```js
+http://kovan.dex.top/v1/orderbyid/10000005
+```
+
+**Simple response**
+
+```js
+{
+  "order": {
+    "orderId": "10000005",
+    "pairId": "ETH_ADX",
+    "action": "Sell",
+    "price": "0.00165000",
+    "amountTotal": "200.00000000",
+    "amountFilled": "200.00000000",
+    "filledAveragePrice": "0.00165000",
+    "status": "Filled",
+    "createTimeMs": "1524809137398",
+    "updateTimeMs": "1524809653759",
+    "expireTimeSec": "1525413935",
+    "nonce": "1524809135488"
+  }
+}
+
+
+```
+
+## GetTrades
+
+Get user's recent trades on current wallet address
+
+**Request** `GET /v1/trades/:addr/:pairId/:size`
+
+- HTTP Request Header
+  - `Authorization: Bearer <token>` Token obtained when sign in. 
+
+- params
+  - `pairId` The id of the trading token pair.
+  - `size` The number of recent trades to get.
+  - `addr` Trader eth address
+
+**Simple Request**
+
+```js
+http://kovan.dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
+```
+
+**Simple response**
+
+```js
+{
+  "trades": [
+    {
+      "pairId": "ETH_ADX",
+      "timeMs": "1525231321804",
+      "orderId": "10000776",
+      "isBuyer": true,
+      "isMaker": false,
+      "price": "0.00156080",
+      "amount": "163.06101648",
+      "fee": "0.32612203"
+    },
+    {
+      "pairId": "ETH_ADX",
+      "timeMs": "1525231321804",
+      "orderId": "10000776",
+      "isBuyer": true,
+      "isMaker": false,
+      "price": "0.00155810",
+      "amount": "242.11581591",
+      "fee": "0.48423163"
+    }
+  ]
 }
 
 ```
