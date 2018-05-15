@@ -9,6 +9,10 @@
 
 # Trade APIs
 
+**Note**
+
+API rate limit per IP address is `100/second`, and per user is `600/minute`.
+
 ## PlaceOrder
 
 **Request** `POST /v1/placeorder`
