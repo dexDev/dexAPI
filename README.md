@@ -5,7 +5,7 @@
 
 1. register an account by email on [https://kovan.dex.top](https://kovan.dex.top)
 2. bind the trader address on the account page.
-3. deposit eth or tokens in balance page.
+3. deposit eth or tokens on the balance page.
 
 # Trade APIs
 
@@ -15,7 +15,7 @@ API rate limit per IP address is `100/second`, and per user is `600/minute`.
 
 ## PlaceOrder
 
-Place a new order using given parameters.
+Place a new order.
 
 **Request** `POST /v1/placeorder`
 
@@ -81,7 +81,7 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 ## CancelOrder
 
-Cancel an existing order using given parameters.
+Cancel an existing order.
 
 **Request** `POST /v1/cancelorder`
 
@@ -173,7 +173,7 @@ Withdraw a token with the specified amount.
 
 ## GetMarketInfo
 
-Get relevant market information such as market contract address and token Code for signature.
+Get relevant market information such as market contract address and token codes for signature.
 
 **Request** `GET /v1/market` 
 
@@ -224,8 +224,7 @@ http://kovan.dex.top/v1/market
 
 ## GetPairsByCash
 
-Get real-time trade information of all pair of specific cash token such as ETH. 
-This API data can get all trade pair real-time trade information.
+Get the real-time trading information of all available trading pairs of the specified cash token (e.g. "ETH"). 
 
 **Request** `GET /v1/pairlist/:cashTokenId` 
 
@@ -258,7 +257,7 @@ http://kovan.dex.top/v1/pairlist/ETH
 
 ## GetPairInfo
 
-Get real-time trade pair data by pairId.
+Get the real-time information of a trading pair.
 
 **Request** `GET /v1/pairinfo/:pairId`
 
@@ -333,7 +332,7 @@ http://kovan.dex.top/v1/tradehistory/ETH_ADX/3
 
 ## GetPairDepth
 
-Get pair depth given the trade pair id and the depth size.
+Get the depth data of a trading pair.
 
 **Request** `GET /v1/depth/:pairId/:size` 
 
@@ -407,7 +406,7 @@ http://kovan.dex.top/v1/depth/ETH_ADX/5
 
 ## GetActiveOrders
 
-Get unfilled orders or partial filled orders on current wallet address.
+Get unfilled or partially filled orders that have not been cancelled or expired of a trader.
 
 **Request** `GET /v1/activeorders/:addr/:pairId/:size/:page` 
 
@@ -500,7 +499,7 @@ http://kovan.dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ET
 
 ## GetOrderById
 
-Get an order details given a specified order id.
+Get the details of an order by order id.
 
 **Request** `GET /v1/orderbyid/:orderId`
 
@@ -619,7 +618,7 @@ Response:
 
 ## Balance
 
-Get balances of all tokens given the trader address.
+Get the balances of all tokens of a trader.
 
 **Request** `GET /v1/balances/:traderAddr` 
 
