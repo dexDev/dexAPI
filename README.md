@@ -108,7 +108,7 @@ Cancel an existing order using given parameters.
 
 ## CancelAllOrders
 
-Cancel all existing orders using given parameter.
+Cancel all existing orders using given parameters.
 
 **Request** `POST /v1/cancelallorders`
 
@@ -283,7 +283,7 @@ http://kovan.dex.top/v1/pairinfo/ETH_ADX
 
 ## GetTradeHistory
 
-Get recent trades by PairId sort by trade time.
+Get recent trades by pairId sort by trade time.
 
 **Request** `GET /v1/tradehistory/:pairId/:size`
 
@@ -447,7 +447,7 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
 
 ## GetPastOrders
 
-Get filled orders on current wallet address.
+Get past orders on current wallet address.
 
 **Request** `GET /v1/pastorders/:addr/:pairId/:size/:page?from_time_sec=&to_time_sec=`
 
