@@ -1,10 +1,10 @@
 # DEx Open API
 ---
 
-# Account Prepare
+# Account Preparation
 
-1. register a account by email on [https://kovan.dex.top](https://kovan.dex.top)
-2. binding trader address in account page.
+1. register an account by email on [https://kovan.dex.top](https://kovan.dex.top)
+2. bind the trader address on the account page.
 3. deposit eth or tokens in balance page.
 
 # Trade APIs
@@ -15,10 +15,12 @@ API rate limit per IP address is `100/second`, and per user is `600/minute`.
 
 ## PlaceOrder
 
+Place a new order using given parameters.
+
 **Request** `POST /v1/placeorder`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in.
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - Params
   - `traderAddr` Trader address
@@ -79,18 +81,20 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 ## CancelOrder
 
-**Request**`POST /v1/cancelorder`
+Cancel an existing order using given parameters.
+
+**Request** `POST /v1/cancelorder`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in.
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `traderAddr` Trader address
   - `orderId` The order id you want to cancel
   - `pairId` The id of the trading token pair
-  - `nonce` Order nonce. Recommended value is the current timestamp in millisecond.
+  - `nonce` Order nonce. The recommended value is the current timestamp in millisecond.
 
-**Simple Request**
+**Sample Request**
 
 ```js
 {
@@ -100,7 +104,7 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 }
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {}
@@ -108,17 +112,19 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 ## CancelAllOrders
 
-**Request**`POST /v1/cancelallorders`
+Cancel all existing orders using given parameters.
+
+**Request** `POST /v1/cancelallorders`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in.
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `traderAddr` Trader address
   - `pairId` The id of the trading token pair
-  - `nonce` Order nonce. Recommended value is the current timestamp in millisecond.
+  - `nonce` Order nonce. The recommended value is the current timestamp in millisecond.
 
-**Simple Request**
+**Sample Request**
 
 ```js
 {
@@ -127,7 +133,7 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 }
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {}
@@ -135,16 +141,18 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 ## Withdraw
 
+Withdraw a token with the specified amount.
+
 **Request** `POST /v1/withdraw`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in.
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - required params
   - `tokenId`:  Withdraw token id
   - `amount`: Withdraw Amount
 
-**Simple Request**
+**Sample Request**
 
 ```js
 {
@@ -153,7 +161,7 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 }
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {}
@@ -165,18 +173,18 @@ The bytes to be hashed (using keccak256) for signing are the concatenation of th
 
 ## GetMarketInfo
 
-This API for getting important market infomation such as market contract address and token Code for signature
+Get relevant market information such as market contract address and token Code for signature.
 
 **Request** `GET /v1/market` 
 
 
-**Simple Request**
+**Sample Request**
 
 ```http
 http://kovan.dex.top/v1/market
 ```
 
-**simple Response**
+**Sample Response**
 
 ```js
 {
@@ -216,26 +224,27 @@ http://kovan.dex.top/v1/market
 
 ## GetPairsByCash
 
-This API for getting realtime  trade infomation of  all pair of specific cashtoken such as ETH. This API data can get all tradepair realtime trade infomation.
+Get real-time trade information of all pair of specific cash token such as ETH. 
+This API data can get all trade pair real-time trade information.
 
 **Request** `GET /v1/pairlist/:cashTokenId` 
 
 - `cashTokenId` The basic cash token like ETH
 
-**Simple Request**
+**Sample Request**
 
 ```http
 http://kovan.dex.top/v1/pairlist/ETH
 ```
 
-**simple Response**
+**Sample Response**
 
 ```js
 {
   "pairs":[
     {
       "pairId": "ETH_ADX", // request trade pair's Id
-      "timeMs": "1517975573850", // reponse timestamp
+      "timeMs": "1517975573850", // response timestamp
       "lastPrice": "5.095449", // price of timeMs
       "volume24": "414.056370", // total volume of this pair in 24 hours 
       "change24": "4.421090", // price change of this pair in 24 hours
@@ -249,19 +258,19 @@ http://kovan.dex.top/v1/pairlist/ETH
 
 ## GetPairInfo
 
-Simple TradePair realtime data API by pairId
+Get real-time trade pair data by pairId.
 
 **Request** `GET /v1/pairinfo/:pairId`
 
 - `pairId` Order trade pair
 
-**Simple Request**
+**Sample Request**
 
 ```http
 http://kovan.dex.top/v1/pairinfo/ETH_ADX
 ```
 
-**Simple Response**
+**Sample Response**
 ​
 ```js
 {
@@ -278,20 +287,20 @@ http://kovan.dex.top/v1/pairinfo/ETH_ADX
 
 ## GetTradeHistory
 
-Get recent trades by PairId sort by trade time
+Get recent trades by pairId sort by trade time.
 
 **Request** `GET /v1/tradehistory/:pairId/:size`
 
 - `pairId` The id of the trading token pair.
 - `size` The number of levels of history to get.
 
-**Simple Request**
+**Sample Request**
 
 ```http
 http://kovan.dex.top/v1/tradehistory/ETH_ADX/3
 ```
 
-**Simple Response**
+**Sample Response**
 
 ```js
 {
@@ -324,19 +333,20 @@ http://kovan.dex.top/v1/tradehistory/ETH_ADX/3
 
 ## GetPairDepth
 
+Get pair depth given the trade pair id and the depth size.
 
 **Request** `GET /v1/depth/:pairId/:size` 
 
 - `pairId` The id of the trading token pair.
 - `size` The number of levels of depth to get.
 
-**Simple Request**
+**Sample Request**
 
 ```http
 http://kovan.dex.top/v1/depth/ETH_ADX/5
 ```
 
-**Simple Reponse**:
+**Sample Response**:
 
 ```js
 {
@@ -397,12 +407,12 @@ http://kovan.dex.top/v1/depth/ETH_ADX/5
 
 ## GetActiveOrders
 
-Get user's unfilled orders or partical filled orders on current wallet address
+Get unfilled orders or partial filled orders on current wallet address.
 
 **Request** `GET /v1/activeorders/:addr/:pairId/:size/:page` 
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in. 
 
 - params
   - `pairId` The id of the trading token pair.
@@ -410,13 +420,13 @@ Get user's unfilled orders or partical filled orders on current wallet address
   - `page` The pages number to get
   - `addr` Trader eth address
 
-**Simple Request**
+**Sample Request**
 
 ```js
 http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {
@@ -441,12 +451,12 @@ http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/
 
 ## GetPastOrders
 
-Get user's filled orders on current wallet address
+Get past orders on current wallet address.
 
 **Request** `GET /v1/pastorders/:addr/:pairId/:size/:page?from_time_sec=&to_time_sec=`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in. 
 
 - params
   - `pairId` The id of the trading token pair.
@@ -458,13 +468,13 @@ Get user's filled orders on current wallet address
   - `from_time_sec` Timestamp in sec to get past orders from INCLUSIVE
   - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE 
 
-**Simple Request**
+**Sample Request**
 
 ```js
 http://kovan.dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1?from_time_sec=1498793709&to_time_sec=1498794709
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {
@@ -490,23 +500,23 @@ http://kovan.dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ET
 
 ## GetOrderById
 
-Get order of the specified order id
+Get an order details given a specified order id.
 
 **Request** `GET /v1/orderbyid/:orderId`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in. 
 
 - params
   - `orderId` The id of the order.
 
-**Simple Request**
+**Sample Request**
 
 ```js
 http://kovan.dex.top/v1/orderbyid/10000005
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {
@@ -531,25 +541,25 @@ http://kovan.dex.top/v1/orderbyid/10000005
 
 ## GetTrades
 
-Get user's recent trades on current wallet address
+Get recent trades on current wallet address.
 
 **Request** `GET /v1/trades/:addr/:pairId/:size`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in. 
 
 - params
   - `pairId` The id of the trading token pair.
   - `size` The number of recent trades to get.
   - `addr` Trader eth address
 
-**Simple Request**
+**Sample Request**
 
 ```js
 http://kovan.dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
 ```
 
-**Simple response**
+**Sample response**
 
 ```js
 {
@@ -583,9 +593,11 @@ http://kovan.dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_AD
 
 ## Login
 
-**Request**`POST /v1/authenticate` 
+API used to login to exchange.
 
-**Simple Request**
+**Request** `POST /v1/authenticate` 
+
+**Sample Request**
 
 ```js
 {
@@ -594,7 +606,7 @@ http://kovan.dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_AD
 }
 ```
 
-Reponse:
+Response:
 
 ```js
 {
@@ -607,21 +619,23 @@ Reponse:
 
 ## Balance
 
+Get balances of all tokens given the trader address.
+
 **Request** `GET /v1/balances/:traderAddr` 
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when sign in.
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `traderAddr` Trader address
 
-**Simple Request**
+**Sample Request**
 
 ```
 http://kovan.dex.top/v1/balances
 ```
 
-**Simple Response**
+**Sample Response**
 
 ```js
 {
