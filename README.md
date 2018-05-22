@@ -136,7 +136,9 @@ Cancel all existing orders using given parameters.
 **Sample response**
 
 ```js
-{}
+{
+    cancelledOrderIds: [1000373, 1000374] // ids of all cancelled orders
+}
 ```
 
 ## Withdraw
@@ -643,19 +645,22 @@ http://kovan.dex.top/v1/balances
       "tokenId": "ADX", // TokenId
       "total": "0", // Token total amount
       "active": "0", // Token amount can withdraw
-      "locked": "0" // Token amount is locked at this moment
+      "locked": "0", // Token amount is locked at this moment
+      "withdrawing": "0"
     },
     {
       "tokenId": "EOS",
       "total": "0",
       "active": "0",
-      "locked": "0"
+      "locked": "0",
+      "withdrawing": "0"
     },
     {
       "tokenId": "ETH",
       "total": "1.00000000",
       "active": "0.99790000",
-      "locked": "0.00210000"
+      "locked": "0.00210000",
+      "withdrawing": "0"
     }
   ],
   "estimatedValue": "" // Account total estimate value
