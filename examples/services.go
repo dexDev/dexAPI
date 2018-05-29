@@ -17,7 +17,7 @@ import (
 //- 3. Deposit eth or stock tokens in the balance page
 
 // DEx.top testnet api host
-var dextopTestnetHost = "https://kovan.dex.top"
+var dextopTestnetHost = "https://dex.top"
 
 // Test account
 const (

@@ -3,7 +3,7 @@
 
 # Account Preparation
 
-1. register an account by email on [https://kovan.dex.top](https://kovan.dex.top)
+1. register an account by email on [https://dex.top](https://dex.top)
 2. bind the trader address on the account page.
 3. deposit eth or tokens on the balance page.
 
@@ -183,7 +183,7 @@ Get relevant market information such as market contract address and token codes 
 **Sample Request**
 
 ```http
-http://kovan.dex.top/v1/market
+http://dex.top/v1/market
 ```
 
 **Sample Response**
@@ -235,7 +235,7 @@ Get the real-time trading information of all available trading pairs of the spec
 **Sample Request**
 
 ```http
-http://kovan.dex.top/v1/pairlist/ETH
+http://dex.top/v1/pairlist/ETH
 ```
 
 **Sample Response**
@@ -268,7 +268,7 @@ Get the real-time information of a trading pair.
 **Sample Request**
 
 ```http
-http://kovan.dex.top/v1/pairinfo/ETH_ADX
+http://dex.top/v1/pairinfo/ETH_ADX
 ```
 
 **Sample Response**
@@ -298,7 +298,7 @@ Get recent trades by pairId sort by trade time.
 **Sample Request**
 
 ```http
-http://kovan.dex.top/v1/tradehistory/ETH_ADX/3
+http://dex.top/v1/tradehistory/ETH_ADX/3
 ```
 
 **Sample Response**
@@ -344,7 +344,7 @@ Get the depth data of a trading pair.
 **Sample Request**
 
 ```http
-http://kovan.dex.top/v1/depth/ETH_ADX/5
+http://dex.top/v1/depth/ETH_ADX/5
 ```
 
 **Sample Response**:
@@ -424,7 +424,7 @@ Get unfilled or partially filled orders that have not been cancelled or expired 
 **Sample Request**
 
 ```js
-http://kovan.dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
+http://dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1
 ```
 
 **Sample response**
@@ -472,7 +472,7 @@ Get past orders on current wallet address.
 **Sample Request**
 
 ```js
-http://kovan.dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1?from_time_sec=1498793709&to_time_sec=1498794709
+http://dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/100/1?from_time_sec=1498793709&to_time_sec=1498794709
 ```
 
 **Sample response**
@@ -514,7 +514,7 @@ Get the details of an order by order id.
 **Sample Request**
 
 ```js
-http://kovan.dex.top/v1/orderbyid/10000005
+http://dex.top/v1/orderbyid/10000005
 ```
 
 **Sample response**
@@ -557,7 +557,7 @@ Get recent trades on current wallet address.
 **Sample Request**
 
 ```js
-http://kovan.dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
+http://dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
 ```
 
 **Sample response**
@@ -633,7 +633,7 @@ Get the balances of all tokens of a trader.
 **Sample Request**
 
 ```
-http://kovan.dex.top/v1/balances
+http://dex.top/v1/balances
 ```
 
 **Sample Response**
