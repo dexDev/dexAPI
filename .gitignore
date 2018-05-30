@@ -7,3 +7,6 @@ examples/vendor/
 
 *.class
 *.iml
+
+java/.gradle/
+java/build/

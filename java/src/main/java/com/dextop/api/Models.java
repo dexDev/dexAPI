@@ -34,7 +34,7 @@ public class Models {
     }
 
     public static long stringToE8(String input) {
-        return (long)(Float.parseFloat(input)*1e8);
+        return (long) (Float.parseFloat(input) * 1e8);
     }
 
     public static long GetNonce() {
@@ -42,14 +42,14 @@ public class Models {
     }
 
     public static int GetExpireTimeStamp() {
-        return (int)(GetNonce()/1000L+3600); // set expire time to 1 hour later
+        return (int) (GetNonce() / 1000L + 3600); // set expire time to 1 hour later
     }
 
     public static String sigToString(Sign.SignatureData sig) {
-        String R = Numeric.toHexString(sig.getR(),0,32,false);
-        String S = Numeric.toHexString(sig.getS(),0, 32,false);
-        String V = sig.getV()-27==0?"00":"01";
-        return "0x"+R+S+V;
+        String R = Numeric.toHexString(sig.getR(), 0, 32, false);
+        String S = Numeric.toHexString(sig.getS(), 0, 32, false);
+        String V = sig.getV() - 27 == 0 ? "00" : "01";
+        return "0x" + R + S + V;
     }
 
     public static class DexOrder {

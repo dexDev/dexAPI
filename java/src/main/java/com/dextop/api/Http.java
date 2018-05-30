@@ -25,6 +25,7 @@ public class Http {
             request.header("Authorization", "Bearer " + token);
             JSONObject postData = new JSONObject(params);
             request.send(postData.toString());
+            System.out.println(postData.toString());
             String response = request.body();
             JSONObject ret = new JSONObject(response);
             return ret;

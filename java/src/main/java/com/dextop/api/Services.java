@@ -2,6 +2,7 @@ package com.dextop.api;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 
@@ -22,7 +23,7 @@ public class Services {
         HashMap<String, String> loginData = new HashMap<String, String>();
         loginData.put("email", email);
         loginData.put("password", password);
-        JSONObject ret = Http.FetchJson(url, loginData,"");
+        JSONObject ret = Http.FetchJson(url, loginData, "");
         return ret.getString("token");
     }
 
@@ -34,7 +35,7 @@ public class Services {
         marketInfo.marketAddr = ret.getString("marketAddr");
         JSONArray cashTokensJSON = ret.getJSONObject("config").getJSONArray("cashTokens");
         Models.Token[] cashTokens = new Models.Token[cashTokensJSON.length()];
-        for(int i=0;i<cashTokens.length;i++) {
+        for (int i = 0; i < cashTokens.length; i++) {
             JSONObject json = cashTokensJSON.getJSONObject(i);
             Models.Token token = new Models.Token();
             token.tokenCode = json.getInt("tokenCode");
@@ -44,8 +45,8 @@ public class Services {
         marketInfo.cashTokens = cashTokens;
 
         JSONArray stockTokensJSON = ret.getJSONObject("config").getJSONArray("stockTokens");
-        Models.Token[] stockTokens= new Models.Token[stockTokensJSON.length()];
-        for(int i=0;i<stockTokens.length;i++) {
+        Models.Token[] stockTokens = new Models.Token[stockTokensJSON.length()];
+        for (int i = 0; i < stockTokens.length; i++) {
             JSONObject json = stockTokensJSON.getJSONObject(i);
             Models.Token token = new Models.Token();
             token.tokenCode = json.getInt("tokenCode");
@@ -58,8 +59,8 @@ public class Services {
 
     public JSONObject PlaceOrder(Models.DexOrder order, String privKey, String token) {
         String url = this.dextop + Endpoints.PlaceOrder;
-        HashMap<String,String> data = order.ToBody(privKey);
-        JSONObject ret = Http.FetchJson(url, data,token);
+        HashMap<String, String> data = order.ToBody(privKey);
+        JSONObject ret = Http.FetchJson(url, data, token);
         return ret;
     }
 }
