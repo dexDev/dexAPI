@@ -179,7 +179,7 @@ Withdraw a token with the specified amount.
 
 Get relevant market information such as market contract address and token codes for signature.
 
-**Request** `GET /v1/market` 
+**Request** `GET /v1/market`
 
 
 **Sample Request**
@@ -228,9 +228,9 @@ http://dex.top/v1/market
 
 ## GetPairsByCash
 
-Get the real-time trading information of all available trading pairs of the specified cash token (e.g. "ETH"). 
+Get the real-time trading information of all available trading pairs of the specified cash token (e.g. "ETH").
 
-**Request** `GET /v1/pairlist/:cashTokenId` 
+**Request** `GET /v1/pairlist/:cashTokenId`
 
 - `cashTokenId` The basic cash token like ETH
 
@@ -249,7 +249,7 @@ http://dex.top/v1/pairlist/ETH
       "pairId": "ETH_ADX", // request trade pair's Id
       "timeMs": "1517975573850", // response timestamp
       "lastPrice": "5.095449", // price of timeMs
-      "volume24": "414.056370", // total volume of this pair in 24 hours 
+      "volume24": "414.056370", // total volume of this pair in 24 hours
       "change24": "4.421090", // price change of this pair in 24 hours
       "changePercent24": "", // price change rate of this pair in 24 hours
       "high24": "9.612255", // highest price of this pair in last 24 hours
@@ -338,7 +338,7 @@ http://dex.top/v1/tradehistory/ETH_ADX/3
 
 Get the depth data of a trading pair.
 
-**Request** `GET /v1/depth/:pairId/:size` 
+**Request** `GET /v1/depth/:pairId/:size`
 
 - `pairId` The id of the trading token pair.
 - `size` The number of levels of depth to get.
@@ -412,10 +412,10 @@ http://dex.top/v1/depth/ETH_ADX/5
 
 Get unfilled or partially filled orders that have not been cancelled or expired of a trader.
 
-**Request** `GET /v1/activeorders/:addr/:pairId/:size/:page` 
+**Request** `GET /v1/activeorders/:addr/:pairId/:size/:page`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
@@ -435,7 +435,7 @@ http://dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_AD
 {
   orders: [{
     order_id: '334213', //Unique Order Id
-    pair_id: 'ETH_ADX', 
+    pair_id: 'ETH_ADX',
     action: 1,
     type: 'limit', // Order Type:
     price: 1000,
@@ -459,7 +459,7 @@ Get past orders on current wallet address.
 **Request** `GET /v1/pastorders/:addr/:pairId/:size/:page?from_time_sec=&to_time_sec=`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
@@ -469,7 +469,7 @@ Get past orders on current wallet address.
  
 - optional params
   - `from_time_sec` Timestamp in sec to get past orders from INCLUSIVE
-  - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE 
+  - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE
 
 **Sample Request**
 
@@ -508,7 +508,7 @@ Get the details of an order by order id.
 **Request** `GET /v1/orderbyid/:orderId`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `orderId` The id of the order.
@@ -546,9 +546,9 @@ http://dex.top/v1/orderbyid/10000005
 
 - params
    - `pairId` The id of the trading token pair.
-   - `resolution` duration for each bar
-   - `startTimeStamp` the start time of history data
-   - `endTimeStamp` the end time of history data
+   - `resolution` duration for each bar, only support `5`, `15`, `30`, `60`, `1D`, `1W`.
+   - `startTimeStamp` the start time of history data.
+   - `endTimeStamp` the end time of history data.
 
 **Sample Request**
 
@@ -620,7 +620,7 @@ Get recent trades on current wallet address.
 **Request** `GET /v1/trades/:addr/:pairId/:size`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
@@ -669,7 +669,7 @@ http://dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
 
 API used to login to exchange.
 
-**Request** `POST /v1/authenticate` 
+**Request** `POST /v1/authenticate`
 
 **Sample Request**
 
@@ -695,7 +695,7 @@ Response:
 
 Get the balances of all tokens of a trader.
 
-**Request** `GET /v1/balances/:traderAddr` 
+**Request** `GET /v1/balances/:traderAddr`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when signing in.
