@@ -1,11 +1,13 @@
 # DEx Open API
 ---
 
-# Account Preparation
+# Preparations
 
 1. register an account by email on [https://dex.top](https://dex.top)
 2. bind the trader address on the account page.
 3. deposit eth or tokens on the balance page.
+4. You can use [https://testnet271828.dex.top](https://testnet271828.dex.top) for test which base on Kovan testnet, You can contact admin on telegram ask for test tokens
+5. APIs rate limit is 100/sec per ip or account
 
 # Trade APIs
 
@@ -536,8 +538,79 @@ http://dex.top/v1/orderbyid/10000005
     "nonce": "1524809135488"
   }
 }
+```
 
+## GetKlineHistory
 
+**Request** `GET /v1/kline/history?symbol={pairID}&resolution={resolution}&from={startTimeStamp}&to={endTimeStamp}`
+
+- params
+   - `pairId` The id of the trading token pair.
+   - `resolution` duration for each bar
+   - `startTimeStamp` the start time of history data
+   - `endTimeStamp` the end time of history data
+
+**Sample Request**
+
+```js
+http://dex.top/v1/kline/history?symbol=ETH_YEE&resolution=60&from=1527807437&to=1527843437
+```
+
+**Sample response**
+
+```js
+{
+    s: "ok",
+    errmsg: "",
+    // Timestamp
+    t: [
+        "1527825600",
+        "1527829200",
+        "1527832800",
+        "1527836400",
+        "1527840000"
+    ],
+    // Close
+    c: [
+        0.00004501,
+        0.00004324,
+        0.00004311,
+        0.0000437,
+        0.00004211
+    ],
+    // Open
+    o: [
+        0.00004392,
+        0.00004501,
+        0.00004324,
+        0.00004311,
+        0.0000437
+    ],
+    // High
+    h: [
+        0.00004504,
+        0.00004401,
+        0.00004376,
+        0.0000437,
+        0.0000431
+    ],
+    // Low
+    l: [
+        0.00004392,
+        0.00004324,
+        0.00004311,
+        0.0000437,
+        0.00004211
+    ],
+    // Volume
+    v: [
+        0.9682618499999999,
+        73.98493420589,
+        3.018485526814107,
+        0.0809761,
+        143.76744365959996
+    ]
+}
 ```
 
 ## GetTrades
