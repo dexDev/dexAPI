@@ -77,12 +77,13 @@ Place a new order.
 - Signing Scheme 1 (Friendly to API usage)
 
   The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
-  1. Prefix "\x19Ethereum Signed Message:\n70".
-  2. String "DEx2 Order: " (Note the trailing whitespace)
-  3. The market address.
+  1. Prefix `"\x19Ethereum Signed Message:\n70"`.
+  2. String `"DEx2 Order: "` (Note the trailing whitespace)
+  3. The `market address`.
+  
      This is for replay attack protection when we deploy a new market.
-  4. nonce(64)
-  5. expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)
+  4. `nonce(64)`
+  5. `expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)`
 
 
 ## CancelOrder
