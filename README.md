@@ -505,18 +505,19 @@ http://dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/
 
 Get the details of an order by order id.
 
-**Request** `GET /v1/orderbyid/:orderId`
+**Request** `GET /v1/orderbyid/:traderAddr/:orderId`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
+  - `traderAddr` Trader eth address
   - `orderId` The id of the order.
 
 **Sample Request**
 
 ```js
-http://dex.top/v1/orderbyid/10000005
+http://dex.top/v1/orderbyid/0x6a83D834951F29924559B8146D11a70EaB8E328b/10000005
 ```
 
 **Sample response**
