@@ -69,12 +69,13 @@ Place a new order.
 }
 ```
 
-Full data samples of order signing, including the used private keys, can be found at
-[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).
+### Note
 
-**Note**
+**Full data samples of order signing, including the used private keys, can be found at
+[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).**
 
-Signing Scheme 1 (Friendly to API usage)
+**Signing Scheme 1 (Friendly to API usage)**
+
 The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
 1. Prefix "\x19Ethereum Signed Message:\n70".
 2. String "DEx2 Order: " (Note the trailing whitespace)
