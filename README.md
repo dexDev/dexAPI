@@ -69,6 +69,9 @@ Place a new order.
 }
 ```
 
+Full data samples of order signing, including the used private keys, can be found at
+[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).
+
 **Note**
 
 Signing Scheme 1 (Friendly to API usage)
@@ -274,7 +277,7 @@ http://dex.top/v1/pairinfo/ETH_ADX
 ```
 
 **Sample Response**
-​
+
 ```js
 {
   "pairId": "ETH_ADX",
@@ -466,7 +469,7 @@ Get past orders on current wallet address.
   - `size` The number of each page of user past orders to get.
   - `page` The pages number to get
   - `addr` Trader eth address
- 
+
 - optional params
   - `from_time_sec` Timestamp in sec to get past orders from INCLUSIVE
   - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE
