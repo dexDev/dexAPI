@@ -71,18 +71,18 @@ Place a new order.
 
 ### Note
 
-**Full data samples of order signing, including the used private keys, can be found at
-[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).**
+- Full data samples of order signing, including the used private keys, can be found at
+[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).
 
-**Signing Scheme 1 (Friendly to API usage)**
+- Signing Scheme 1 (Friendly to API usage)
 
-The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
-1. Prefix "\x19Ethereum Signed Message:\n70".
-2. String "DEx2 Order: " (Note the trailing whitespace)
-3. The market address.
-   This is for replay attack protection when we deploy a new market.
-4. nonce(64)
-5. expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)
+  The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
+  1. Prefix "\x19Ethereum Signed Message:\n70".
+  2. String "DEx2 Order: " (Note the trailing whitespace)
+  3. The market address.
+     This is for replay attack protection when we deploy a new market.
+  4. nonce(64)
+  5. expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)
 
 
 ## CancelOrder
