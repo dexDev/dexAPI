@@ -438,22 +438,24 @@ http://dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_AD
 
 ```js
 {
-  orders: [{
-    order_id: '334213', //Unique Order Id
-    pair_id: 'ETH_ADX',
-    action: 1,
-    type: 'limit', // Order Type:
-    price: 1000,
-    amount_total: 6, //Total Amount（include filled and unfilled）
-    amount_filled: 3, // Filled amount
-    filled_total_price: 3000, // Filled price
-    create_time_ms: 12317, // Order create time
-    update_time_ms: 12317, // Last updated time
-    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
-    nonce: 12,
-  }],
-  total: 1,
-  page: 1
+  "orders": [
+    {
+      "orderId": "10126257",
+      "pairId": "ETH_ADX",
+      "action": "Buy",
+      "price": "0.00010000",
+      "amountTotal": "500.00000000",
+      "amountFilled": "0.00000000",
+      "filledAveragePrice": "0.00000000",
+      "status": "Unfilled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
+      "createTimeMs": "1528790525164",
+      "updateTimeMs": "1528790525164",
+      "expireTimeSec": "1529395319",
+      "nonce": "1528790519061"
+    }
+  ],
+  "page": 1,
+  "total": 1
 }
 ```
 
@@ -486,24 +488,25 @@ http://dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/
 
 ```js
 {
-  orders: [{
-    order_id: '334213',
-    pair_id: 'ETH_ADX',
-    action: 1,
-    type: 'limit', // Order type
-    price: 1000,
-    amount_total: 6, //Total Amount（include filled and unfilled）
-    amount_filled: 3, // Filled amount
-    filled_total_price: 3000, // Filled price
-    create_time_ms: 12317, // Order create time
-    update_time_ms: 12317, // Last updated time
-    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
-    nonce: 12,
-  }],
-  total: 1,
-  page: 1
+  "orders": [
+    {
+      "orderId": "10000470",
+      "pairId": "ETH_ADX",
+      "action": "Buy",
+      "price": "0.00004100",
+      "amountTotal": "1500.00000000",
+      "amountFilled": "1500.00000000",
+      "filledAveragePrice": "0.00003924",
+      "status": "Filled",
+      "createTimeMs": "1528112182218",
+      "updateTimeMs": "1528112182218",
+      "expireTimeSec": "1528716977",
+      "nonce": "1528112177402"
+    }
+  ],
+  "page": 1,
+  "total": 1
 }
-
 ```
 
 ## GetOrderById
