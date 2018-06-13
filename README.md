@@ -3,9 +3,9 @@
 
 # Preparations
 
-1. register an account by email on [https://dex.top](https://dex.top)
-2. bind the trader address on the account page.
-3. deposit eth or tokens on the balance page.
+1. Register an account by email on [https://dex.top](https://dex.top)
+2. Bind the trader address on the account page.
+3. Deposit eth or tokens on the balance page.
 4. You can use [https://testnet271828.dex.top](https://testnet271828.dex.top) for test which base on Kovan testnet, You can contact admin on telegram ask for test tokens
 5. APIs rate limit is 100/sec per ip or account
 
@@ -282,14 +282,16 @@ http://dex.top/v1/pairinfo/ETH_ADX
 
 ```js
 {
-  "pairId": "ETH_ADX",
-  "timeMs": "1517974573647",
-  "lastPrice": "5.813280",
-  "volume24": "402.666631",
-  "change24": "4.497973",
-  "changePercent24": "",
-  "high24": "7.978321",
-  "low24": "3.491216"
+  "pairInfo": {
+    "pairId": "ETH_ADX",
+    "timeMs": "1517974573647",
+    "lastPrice": "5.813280",
+    "volume24": "402.666631",
+    "change24": "4.497973",
+    "changePercent24": "",
+    "high24": "7.978321",
+    "low24": "3.491216"
+  }
 }
 ```
 
