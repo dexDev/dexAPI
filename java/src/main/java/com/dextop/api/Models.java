@@ -1,5 +1,6 @@
 package com.dextop.api;
 
+import org.bouncycastle.util.encoders.Hex;
 import org.web3j.abi.datatypes.generated.Uint32;
 import org.web3j.abi.datatypes.generated.Uint64;
 import org.web3j.abi.datatypes.generated.Uint8;
@@ -7,6 +8,7 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
 
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class Models {
     }
 
     public static long stringToE8(String input) {
-        return (long) (Float.parseFloat(input) * 1e8);
+        return new BigDecimal(input).multiply(new BigDecimal(1e8)).longValue();
     }
 
     public static long GetNonce() {
@@ -72,10 +74,10 @@ public class Models {
             this.MarketAddr = marketAddr;
             this.PairInfo = pairInfo;
             this.PairId = new Uint32(pairId);
-            if (action == "Buy") {
+            if (action.equals("Buy")) {
                 this.ActionName = action;
                 this.Action = new Uint8(0);
-            } else if (action == "Sell") {
+            } else if (action.equals("Sell")) {
                 this.ActionName = action;
                 this.Action = new Uint8(1);
             } else {
@@ -103,6 +105,7 @@ public class Models {
             buf.put(Numeric.toBytesPadded(this.IoC.getValue(), 1));
             buf.put(Numeric.toBytesPadded(this.Action.getValue(), 1));
             buf.put(Numeric.toBytesPadded(this.PairId.getValue(), 4));
+            System.out.println(Hex.toHexString(bytes));
             return bytes;
         }
 

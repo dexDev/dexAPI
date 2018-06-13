@@ -15,14 +15,14 @@ public class App {
         Models.MarketInfo marketInfo = service.GetMarketInfo();
         System.out.println(marketInfo);
 
-        // ETH tokenCode = 0, ADX tokenCode = 100, ETH_ADX = int32(0) << 32 | int32(100) = 100
+        // ETH tokenCode = 0, YEE tokenCode = 300, ETH_YEE = int32(0) << 32 | int32(300) = 300
 
         try {
             Models.DexOrder order = new Models.DexOrder(
                     TraderAddr,
                     marketInfo.marketAddr,
-                    "ETH_ADX",
-                    100,
+                    "ETH_YEE",
+                    300,
                     "Buy",
                     "0.0003",
                     "100"
