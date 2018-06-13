@@ -1,11 +1,13 @@
 # DEx Open API
 ---
 
-# Account Preparation
+# Preparations
 
-1. register an account by email on [https://dex.top](https://dex.top)
-2. bind the trader address on the account page.
-3. deposit eth or tokens on the balance page.
+1. Register an account by email on [https://dex.top](https://dex.top)
+2. Bind the trader address on the account page.
+3. Deposit eth or tokens on the balance page.
+4. You can use [https://testnet271828.dex.top](https://testnet271828.dex.top) for test which base on Kovan testnet, You can contact admin on telegram ask for test tokens
+5. APIs rate limit is 100/sec per ip or account
 
 # Trade APIs
 
@@ -67,16 +69,21 @@ Place a new order.
 }
 ```
 
-**Note**
+### Note
 
-Signing Scheme 1 (Friendly to API usage)
-The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
-1. Prefix "\x19Ethereum Signed Message:\n70".
-2. String "DEx2 Order: " (Note the trailing whitespace)
-3. The market address.
-   This is for replay attack protection when we deploy a new market.
-4. nonce(64)
-5. expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)
+- Full data samples of order signing, including the used private keys, can be found at
+[here](https://github.com/dexDev/dexAPI/blob/master/samples/signing_orders.md).
+
+- Signing Scheme 1 (Friendly to API usage)
+
+  The bytes to be hashed (using keccak256) for signing are the concatenation of the following (uints are in big-endian order):
+  1. Prefix `"\x19Ethereum Signed Message:\n70"`.
+  2. String `"DEx2 Order: "` (Note the trailing whitespace)
+  3. The `market address`.
+  
+     This is for replay attack protection when we deploy a new market.
+  4. `nonce(64)`
+  5. `expireTimeSec(64) amountE8(64) priceE8(64) 0x00(8) action(8) pairId(32)`
 
 
 ## CancelOrder
@@ -177,7 +184,7 @@ Withdraw a token with the specified amount.
 
 Get relevant market information such as market contract address and token codes for signature.
 
-**Request** `GET /v1/market` 
+**Request** `GET /v1/market`
 
 
 **Sample Request**
@@ -226,9 +233,9 @@ http://dex.top/v1/market
 
 ## GetPairsByCash
 
-Get the real-time trading information of all available trading pairs of the specified cash token (e.g. "ETH"). 
+Get the real-time trading information of all available trading pairs of the specified cash token (e.g. "ETH").
 
-**Request** `GET /v1/pairlist/:cashTokenId` 
+**Request** `GET /v1/pairlist/:cashTokenId`
 
 - `cashTokenId` The basic cash token like ETH
 
@@ -247,7 +254,7 @@ http://dex.top/v1/pairlist/ETH
       "pairId": "ETH_ADX", // request trade pair's Id
       "timeMs": "1517975573850", // response timestamp
       "lastPrice": "5.095449", // price of timeMs
-      "volume24": "414.056370", // total volume of this pair in 24 hours 
+      "volume24": "414.056370", // total volume of this pair in 24 hours
       "change24": "4.421090", // price change of this pair in 24 hours
       "changePercent24": "", // price change rate of this pair in 24 hours
       "high24": "9.612255", // highest price of this pair in last 24 hours
@@ -272,17 +279,19 @@ http://dex.top/v1/pairinfo/ETH_ADX
 ```
 
 **Sample Response**
-​
+
 ```js
 {
-  "pairId": "ETH_ADX",
-  "timeMs": "1517974573647",
-  "lastPrice": "5.813280",
-  "volume24": "402.666631",
-  "change24": "4.497973",
-  "changePercent24": "",
-  "high24": "7.978321",
-  "low24": "3.491216"
+  "pairInfo": {
+    "pairId": "ETH_ADX",
+    "timeMs": "1517974573647",
+    "lastPrice": "5.813280",
+    "volume24": "402.666631",
+    "change24": "4.497973",
+    "changePercent24": "",
+    "high24": "7.978321",
+    "low24": "3.491216"
+  }
 }
 ```
 
@@ -336,7 +345,7 @@ http://dex.top/v1/tradehistory/ETH_ADX/3
 
 Get the depth data of a trading pair.
 
-**Request** `GET /v1/depth/:pairId/:size` 
+**Request** `GET /v1/depth/:pairId/:size`
 
 - `pairId` The id of the trading token pair.
 - `size` The number of levels of depth to get.
@@ -410,10 +419,10 @@ http://dex.top/v1/depth/ETH_ADX/5
 
 Get unfilled or partially filled orders that have not been cancelled or expired of a trader.
 
-**Request** `GET /v1/activeorders/:addr/:pairId/:size/:page` 
+**Request** `GET /v1/activeorders/:addr/:pairId/:size/:page`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
@@ -431,22 +440,24 @@ http://dex.top/v1/activeorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_AD
 
 ```js
 {
-  orders: [{
-    order_id: '334213', //Unique Order Id
-    pair_id: 'ETH_ADX', 
-    action: 1,
-    type: 'limit', // Order Type:
-    price: 1000,
-    amount_total: 6, //Total Amount（include filled and unfilled）
-    amount_filled: 3, // Filled amount
-    filled_total_price: 3000, // Filled price
-    create_time_ms: 12317, // Order create time
-    update_time_ms: 12317, // Last updated time
-    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
-    nonce: 12,
-  }],
-  total: 1,
-  page: 1
+  "orders": [
+    {
+      "orderId": "10126257",
+      "pairId": "ETH_ADX",
+      "action": "Buy",
+      "price": "0.00010000",
+      "amountTotal": "500.00000000",
+      "amountFilled": "0.00000000",
+      "filledAveragePrice": "0.00000000",
+      "status": "Unfilled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
+      "createTimeMs": "1528790525164",
+      "updateTimeMs": "1528790525164",
+      "expireTimeSec": "1529395319",
+      "nonce": "1528790519061"
+    }
+  ],
+  "page": 1,
+  "total": 1
 }
 ```
 
@@ -457,17 +468,17 @@ Get past orders on current wallet address.
 **Request** `GET /v1/pastorders/:addr/:pairId/:size/:page?from_time_sec=&to_time_sec=`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
   - `size` The number of each page of user past orders to get.
   - `page` The pages number to get
   - `addr` Trader eth address
- 
+
 - optional params
   - `from_time_sec` Timestamp in sec to get past orders from INCLUSIVE
-  - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE 
+  - `to_time_sec` Timestamp in sec to get past orders until INCLUSIVE
 
 **Sample Request**
 
@@ -479,42 +490,44 @@ http://dex.top/v1/pastorders/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/
 
 ```js
 {
-  orders: [{
-    order_id: '334213',
-    pair_id: 'ETH_ADX',
-    action: 1,
-    type: 'limit', // Order type
-    price: 1000,
-    amount_total: 6, //Total Amount（include filled and unfilled）
-    amount_filled: 3, // Filled amount
-    filled_total_price: 3000, // Filled price
-    create_time_ms: 12317, // Order create time
-    update_time_ms: 12317, // Last updated time
-    status: "Filled", // "Filled" or "Unfilled" or "PartiallyFilled" or "Cancelled" or "Expired"
-    nonce: 12,
-  }],
-  total: 1,
-  page: 1
+  "orders": [
+    {
+      "orderId": "10000470",
+      "pairId": "ETH_ADX",
+      "action": "Buy",
+      "price": "0.00004100",
+      "amountTotal": "1500.00000000",
+      "amountFilled": "1500.00000000",
+      "filledAveragePrice": "0.00003924",
+      "status": "Filled",
+      "createTimeMs": "1528112182218",
+      "updateTimeMs": "1528112182218",
+      "expireTimeSec": "1528716977",
+      "nonce": "1528112177402"
+    }
+  ],
+  "page": 1,
+  "total": 1
 }
-
 ```
 
 ## GetOrderById
 
 Get the details of an order by order id.
 
-**Request** `GET /v1/orderbyid/:orderId`
+**Request** `GET /v1/orderbyid/:traderAddr/:orderId`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
+  - `traderAddr` Trader eth address
   - `orderId` The id of the order.
 
 **Sample Request**
 
 ```js
-http://dex.top/v1/orderbyid/10000005
+http://dex.top/v1/orderbyid/0x6a83D834951F29924559B8146D11a70EaB8E328b/10000005
 ```
 
 **Sample response**
@@ -536,8 +549,79 @@ http://dex.top/v1/orderbyid/10000005
     "nonce": "1524809135488"
   }
 }
+```
 
+## GetKlineHistory
 
+**Request** `GET /v1/kline/history?symbol={pairID}&resolution={resolution}&from={startTimeStamp}&to={endTimeStamp}`
+
+- params
+   - `pairId` The id of the trading token pair.
+   - `resolution` duration for each bar, only support `5`, `15`, `30`, `60`, `1D`, `1W`.
+   - `startTimeStamp` the start time of history data.
+   - `endTimeStamp` the end time of history data.
+
+**Sample Request**
+
+```js
+http://dex.top/v1/kline/history?symbol=ETH_YEE&resolution=60&from=1527807437&to=1527843437
+```
+
+**Sample response**
+
+```js
+{
+    s: "ok",
+    errmsg: "",
+    // Timestamp
+    t: [
+        "1527825600",
+        "1527829200",
+        "1527832800",
+        "1527836400",
+        "1527840000"
+    ],
+    // Close
+    c: [
+        0.00004501,
+        0.00004324,
+        0.00004311,
+        0.0000437,
+        0.00004211
+    ],
+    // Open
+    o: [
+        0.00004392,
+        0.00004501,
+        0.00004324,
+        0.00004311,
+        0.0000437
+    ],
+    // High
+    h: [
+        0.00004504,
+        0.00004401,
+        0.00004376,
+        0.0000437,
+        0.0000431
+    ],
+    // Low
+    l: [
+        0.00004392,
+        0.00004324,
+        0.00004311,
+        0.0000437,
+        0.00004211
+    ],
+    // Volume
+    v: [
+        0.9682618499999999,
+        73.98493420589,
+        3.018485526814107,
+        0.0809761,
+        143.76744365959996
+    ]
+}
 ```
 
 ## GetTrades
@@ -547,7 +631,7 @@ Get recent trades on current wallet address.
 **Request** `GET /v1/trades/:addr/:pairId/:size`
 
 - HTTP Request Header
-  - `Authorization: Bearer <token>` Token obtained when signing in. 
+  - `Authorization: Bearer <token>` Token obtained when signing in.
 
 - params
   - `pairId` The id of the trading token pair.
@@ -596,7 +680,7 @@ http://dex.top/v1/trades/0x6a83D834951F29924559B8146D11a70EaB8E328b/ETH_ADX/2
 
 API used to login to exchange.
 
-**Request** `POST /v1/authenticate` 
+**Request** `POST /v1/authenticate`
 
 **Sample Request**
 
@@ -622,7 +706,7 @@ Response:
 
 Get the balances of all tokens of a trader.
 
-**Request** `GET /v1/balances/:traderAddr` 
+**Request** `GET /v1/balances/:traderAddr`
 
 - HTTP Request Header
   - `Authorization: Bearer <token>` Token obtained when signing in.

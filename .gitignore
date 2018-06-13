@@ -2,8 +2,8 @@
 
 .idea/
 
-examples/examples
-examples/vendor/
+golang/examples
+golang/vendor/
 
 *.class
 *.iml
