@@ -255,6 +255,7 @@ http://dex.top/v1/pairlist/ETH
       "timeMs": "1517975573850", // response timestamp
       "lastPrice": "5.095449", // price of timeMs
       "volume24": "414.056370", // total volume of this pair in 24 hours
+      "amount24": "2340.81387265", // total token amount in 24 hours
       "change24": "4.421090", // price change of this pair in 24 hours
       "changePercent24": "", // price change rate of this pair in 24 hours
       "high24": "9.612255", // highest price of this pair in last 24 hours
@@ -287,6 +288,7 @@ http://dex.top/v1/pairinfo/ETH_ADX
     "timeMs": "1517974573647",
     "lastPrice": "5.813280",
     "volume24": "402.666631",
+    "amount24": "2340.81387265",
     "change24": "4.497973",
     "changePercent24": "",
     "high24": "7.978321",
