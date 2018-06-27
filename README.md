@@ -6,7 +6,7 @@
 1. Register an account by email on [https://dex.top](https://dex.top)
 2. Bind the trader address on the account page.
 3. Deposit eth or tokens on the balance page.
-4. You can use [https://testnet271828.dex.top](https://testnet271828.dex.top) for test which base on Kovan testnet, You can contact admin on telegram ask for test tokens
+4. You can use [https://testnet271828.dex.top](https://testnet271828.dex.top) for test which base on Kovan testnet, You can go to [Gitter](https://gitter.im/kovan-testnet/faucet) ask for test tokens
 5. APIs rate limit is 100/sec per ip or account
 
 # Trade APIs
