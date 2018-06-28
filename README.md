@@ -559,7 +559,7 @@ http://dex.top/v1/orderbyid/0x6a83D834951F29924559B8146D11a70EaB8E328b/10000005
 
 - params
    - `pairId` The id of the trading token pair.
-   - `resolution` duration for each bar, only support `5`, `15`, `30`, `60`, `1D`, `1W`.
+   - `resolution` duration for each bar, only support `5`, `15`, `30`, `60`, `D`, `W`.
    - `startTimeStamp` the start time of history data.
    - `endTimeStamp` the end time of history data.
 
