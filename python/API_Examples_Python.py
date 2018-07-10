@@ -228,22 +228,9 @@ def place_order(order_info):
     Place a new order, with order params passed in
     """
     headers = {"Authorization": USER_INFORMATION["token"]}
-    #signature = play()
-    # post_data = {'pairId': 'ETH_ZIL',
-    #              'action': 'Buy',
-    #              'amount': '1000.00',
-    #              'price': '0.0001500',
-    #              'nonce': 9999999999999,
-    #              'expireTimeSec': 1531438257,
-    #              'traderAddr': USER_INFORMATION["traderAddr"],
-    #               'sig': ''}
     post_data = order_info
-    signature = play(post_data)
+    signature = get_signature(post_data)
     post_data["sig"] = signature
-    print("Post_Data: ", post_data)
-
-    #post_data["signature"] = signature
-    #print("Post_Data: ", post_data)
     post_data = json.dumps(post_data)
     order_response = requests.post(HOST_URL + "/v1/placeorder", post_data, headers=headers)
     if order_response.status_code == requests.codes.ok:
@@ -312,9 +299,9 @@ def get_trades():
         print("Failed to get trades: ", response.json())
 
 
-def play(order_data):
+def get_signature(order_data):
     """
-    The play() function returns the signature for order signing
+    The get_signature() function returns the signature for order signing
     It takes in the order details for the input parameter
     """
 
