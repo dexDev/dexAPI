@@ -690,6 +690,7 @@ API used to login to exchange.
 {
   "email": 'flynn@dex.top',
   "password": '**********',
+  "durationSec": 86400  // The default value is 259200, i.e. 3 days. The maximum is 30 days.
 }
 ```
 
