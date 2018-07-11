@@ -10,20 +10,28 @@ import eth_utils             # python3 -m pip install eth_utils==1.0.3
 from web3.auto import w3     # python3 -m pip install web3==4.2.0
 
 
-"""
-The following is a Python Script showing the use of current API's
-The following information must be inputted before using:
-user_information 
-    - traderAddr 
-    - email
-    - password
-    - private key
-"""
+# The following is a Python Script showing the use of current API's
+# The USER_INFORMATION dictionary needs to filled with the appropriate information
 
+
+USER_INFORMATION = {"token": "",        # This is returned by the user_login() function
+                    "traderAddr": "",
+                    "email": "",
+                    "password": "",
+                    "privateKey": ""}
+
+
+# URL's for testnet and mainnet
+HOST_URL = "https://dex.top"
+TESTNET_URL = "https://testnet271828.dex.top"
+
+# Market address for mainnet and testnet
+MAINNET_MARKET_ADDR = "0x7600977Eb9eFFA627D6BD0DA2E5be35E11566341"
+TESTNET_MARKET_ADDR = "0x752B76F59cdaE6925377569E3f9352A507535F99"
 
 """
 For the full list of Token codes go to the following URL and populate dictionary accordingly
-URL = "https://dex.top/v1/market"
+URL = "HOST_URL/v1/market"
 """
 
 TOKEN_CODE_DICT = {
@@ -35,77 +43,56 @@ TOKEN_CODE_DICT = {
 }
 
 
-"""
-For testnet use "https://testnet271828.dex.top"
-"""
-HOST_URL = "https://dex.top"
-
-
-USER_INFORMATION = {"token": "",
-                    "traderAddr": "",
-                    "email": "",
-                    "password": "",
-                    "privateKey": ""}
-
-
 def sign_order(order, private_key):
     """
     Takes the order and private key and returns the signature required for trades
     """
 
-    # Returns the Canonical Form of the Market Address
-    market_addr_canon = eth_utils.to_canonical_address("0x7600977Eb9eFFA627D6BD0DA2E5be35E11566341")
+    market_addr_canon = eth_utils.to_canonical_address(MAINNET_MARKET_ADDR)
 
     symbol = order['pairId']
     pair_code = get_pair_code(symbol)
     pair_bytes = fixed_len_byte(pair_code, fixed_len=4)
-    # print('pair', pair_code, list(pair_bytes))
 
-    bs = order['action']
-    bs_code = 1 if bs == 'Buy' else 2
-    action_byte = bs_code - 1
-    # print('action', action_byte)
+    if order['action'] == "Buy":
+        action_byte = 0
+    else:
+        action_byte = 1
 
     price = order['price']
     decimal_price = int(Decimal(price) * Decimal(1e8))
     price_bytes = fixed_len_byte(decimal_price)
-    # print('price', list(price_bytes))
     amount = order['amount']
     decimal_amount = int(Decimal(amount) * Decimal(1e8))
     amount_bytes = fixed_len_byte(decimal_amount)
-    # print('amount', list(amount_bytes))
 
     expire_time_sec = order['expireTimeSec']
     expire_time_sec_bytes = fixed_len_byte(expire_time_sec)
-    # print('amount', list(expire_time_sec_bytes))
 
     nonce = order['nonce']
     nonce_bytes = fixed_len_byte(nonce)
-    # print('nonce', list(nonce_bytes))
 
     ioc = 0
 
-    order_msg_bytes = get_orders_bytes_sign(market_addr_canon, nonce_bytes, expire_time_sec_bytes, amount_bytes,
-                                            price_bytes, ioc, action_byte, pair_bytes)
-    # print('order_msg_bytes', list(order_msg_bytes))
+    order_msg_bytes = get_orders_bytes_sign(
+                    market_addr_canon, nonce_bytes, expire_time_sec_bytes, amount_bytes,
+                    price_bytes, ioc, action_byte, pair_bytes)
 
     go_style_output = ''
     for b in order_msg_bytes:
         go_style_output += '{0:02x}'.format(b)
-    print('order_msg_bytes:', '0x' + go_style_output, '\n')
 
     hash_message = eth_utils.keccak(order_msg_bytes)
     signed_message = w3.eth.account.signHash(hash_message, private_key=private_key)
-    # logging.info(symbol, market_addr[:6], pair_code, bs_code, price, amount, expire_time_sec, nonce, ioc,
-    #              private_key[:6])
+
     return remove_sign_v_offset(signed_message['signature'])
 
 
-def get_pair_code(symbol):
+def get_pair_code(pair_id):
     """
-    Takes the pairID as input and splits it into cash_code and stock_code to convert to integers
+    Get pair code from pair id
     """
-    sub_symbol = symbol.split("_")
+    sub_symbol = pair_id.split("_")
     cash_code = TOKEN_CODE_DICT[sub_symbol[0]]
     stock_code = TOKEN_CODE_DICT[sub_symbol[1]]
     return eth_utils.to_int(cash_code) << 16 | eth_utils.to_int(stock_code)
@@ -116,7 +103,6 @@ def fixed_len_byte(value, fixed_len=8):
     Converts the value to big endian format and returns the appropriate bytes
     """
     int_bytes = eth_utils.int_to_big_endian(value)
-    # print(value, list(int_bytes))
     result_bytes = bytearray(0 for _ in range(fixed_len - len(int_bytes)))
     result_bytes.extend(int_bytes)
     return result_bytes
@@ -143,7 +129,6 @@ def get_orders_bytes_sign(market_addr, nonce, expire_time, amount, price, ioc, a
     sign_bytes.append(ioc)
     sign_bytes.append(action)
     sign_bytes.extend(pairid)
-    #sign_bytes.
     return sign_bytes
 
 
@@ -207,10 +192,10 @@ def user_login():
     r = requests.post(HOST_URL + "/v1/authenticate", pay_load)
     if r.status_code == requests.codes.ok:
         resp = r.json()
-        USER_INFORMATION["token"] = resp['token']
         print("Login Successful")
     else:
         print("Failed user login ", r.json())
+    return resp["token"]
 
 def get_balance():
     """
@@ -264,7 +249,7 @@ def cancel_all_orders():
     headers = {"Authorization": USER_INFORMATION["token"]}
     pay_load = {"traderAddr": USER_INFORMATION["traderAddr"],
                 "pairId": 'ETH_ZIL',
-                "nonce": 10000000000000}
+                "nonce": 10000000000004}
     pay_load = json.dumps(pay_load)
     resp = requests.post(HOST_URL + "/v1/cancelallorders", pay_load, headers=headers)
     if resp.status_code == requests.codes.ok:
@@ -306,22 +291,18 @@ def get_signature(order_data):
     """
 
     signature_hex = sign_order(order_data, USER_INFORMATION["privateKey"])
-    print('signature_hex:', signature_hex)
     return signature_hex
 
 
 if __name__ == '__main__':
 
-    user_login()                      #This call returns a token, which should is placed in USER_INFORMATION["token"]
+    USER_INFORMATION["token"] = user_login()    # user_login returns a token which is stored in USER_INFORMATION[token]
     order_payload = {"pairId": "ETH_ZIL",
                      "action": "Buy",
                      "amount": "1000.00",
                      "price": "0.0001500",
-                     "nonce": 10000000000001,
-                     "expireTimeSec": 1531438257,
+                     "nonce": 10000000000003,
+                     "expireTimeSec": 1531359841,
                      "traderAddr": USER_INFORMATION["traderAddr"]
                      }
     place_order(order_payload)
-
-
-
