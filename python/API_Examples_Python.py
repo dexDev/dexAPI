@@ -34,13 +34,7 @@ For the full list of Token codes go to the following URL and populate dictionary
 URL = "HOST_URL/v1/market"
 """
 
-TOKEN_CODE_DICT = {
-    'ETH': 0,
-    'LOOM': 100,
-    'KNC': 101,
-    'ZIL': 102,
-    'CTXC': 103
-}
+TOKEN_CODE_DICT = {}
 
 
 def sign_order(order, private_key):
@@ -185,7 +179,7 @@ def get_pair_Depth():
 def user_login():
     """
     The login function that takes 'email' and 'password' from 'USER_INFORMATION'
-    The call returns a token that is placed in USER_INFORMATION
+    The call returns a token that is placed in USER_INFORMATION["token"]
     """
     pay_load = {"email": USER_INFORMATION['email'], "password": USER_INFORMATION['password']}
     pay_load = json.dumps(pay_load)
@@ -289,13 +283,27 @@ def get_signature(order_data):
     The get_signature() function returns the signature for order signing
     It takes in the order details for the input parameter
     """
-
     signature_hex = sign_order(order_data, USER_INFORMATION["privateKey"])
     return signature_hex
 
 
+def populate_token_dictionary():
+    """
+    This function fills in the TOKEN_CODE_DICT with the 'tokenCode' and 'tokenId' for all current tokens on market
+    """
+    token_code_dict_temp = {}
+    resp = requests.get(HOST_URL + "/v1/market")
+    var = resp.json()
+    for cash_token in var['config']['cashTokens']:
+        token_code_dict_temp[cash_token['tokenId']] = cash_token['tokenCode']
+    for token in var['config']['stockTokens']:
+        token_code_dict_temp[token['tokenId']] = token['tokenCode']
+    return token_code_dict_temp
+
+
 if __name__ == '__main__':
 
+    TOKEN_CODE_DICT = populate_token_dictionary()
     USER_INFORMATION["token"] = user_login()    # user_login returns a token which is stored in USER_INFORMATION[token]
     order_payload = {"pairId": "ETH_ZIL",
                      "action": "Buy",
@@ -305,4 +313,4 @@ if __name__ == '__main__':
                      "expireTimeSec": 1531359841,
                      "traderAddr": USER_INFORMATION["traderAddr"]
                      }
-    place_order(order_payload)
+    #place_order(order_payload)
